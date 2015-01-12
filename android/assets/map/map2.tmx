@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="30" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="Tile2" tilewidth="16" tileheight="16">
+  <image source="tile20000.png" width="320" height="640"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="80" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztlVsOgjAQAAsCN9CY4Al83oBDcP/D2I82qZvtUvqwS7OTTKyhhGZ0dVJKTaIoNqFAI/3SkH5pSL80pF8a0i8N6ZeG9EujpX5nY+z7GFrqVwPu/T7aF+K75qEcuPebCXOwaK9gfSGEcO/31N4RHxmfMXvW1D5LrX6c5vKI/UrP5d6zYGs4s5z6/WMuQ6G+f1vfzRL9OM1mCLDR6lijH6fZDMGeazFr9/+2Rj9OsxlC6OfK6fePE7DL6jFHv5N2MK8Yo9HHSNy7hX12DPZcg/o9HzazPmP69drOCNeuHVhjYvdg1yDYc7uN/dRZ9lyn9vYB/WoIyb2/daWf9JN+x/UGzL2/pF/xmyZt
+  </data>
+ </layer>
+ <objectgroup name="CollisionLayer1" width="80" height="30">
+  <object x="64" y="384" width="464" height="32"/>
+  <object x="592" y="384" width="128" height="32"/>
+  <object x="32" y="16" width="32" height="400"/>
+  <object x="64" y="16" width="1152" height="32"/>
+  <object x="784" y="384" width="432" height="32"/>
+  <object x="1216" y="16" width="32" height="400"/>
+  <object x="496" y="416" width="32" height="64"/>
+  <object x="592" y="416" width="32" height="64"/>
+  <object x="688" y="416" width="32" height="64"/>
+  <object x="784" y="416" width="32" height="64"/>
+  <object x="272" y="317" width="112" height="21"/>
+  <object x="417" y="270" width="111" height="21"/>
+  <object x="576" y="222" width="112" height="20"/>
+  <object x="753" y="177" width="30" height="12"/>
+  <object x="817" y="177" width="31" height="13"/>
+  <object x="880" y="177" width="31" height="14"/>
+  <object x="945" y="177" width="30" height="14"/>
+  <object x="977" y="224" width="15" height="159"/>
+  <object x="1025" y="225" width="128" height="15"/>
+  <object x="993" y="369" width="159" height="14"/>
+  <object x="1136" y="241" width="17" height="128"/>
+  <object x="1024" y="241" width="16" height="94"/>
+  <object x="1088" y="273" width="16" height="63"/>
+  <object x="1071" y="273" width="17" height="16"/>
+  <object x="1041" y="320" width="48" height="15"/>
+ </objectgroup>
+</map>

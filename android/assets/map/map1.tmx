@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="30" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="Tile2-1" tilewidth="16" tileheight="16">
+  <image source="tile20001.png" width="320" height="640"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="80" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztl20KgzAQBWOq9QRt79CD9f5HaH5EkCVf9W26Gt7AEDQBYVgCrs65lVI6hKQM+2GwHwb7YbAfBvth9Oj3TLx7ZJ4/ib0rwfnDYD8M9sM4c79X0AenqN+tPvGcund7c+Z+V4D9MNgPw7Lf/n6zuLs04Pxh/KPfCHOWg/OHodlv5DnLwfnD+LXfLTjHNcVS2GvZL7F9+whLdI6rFrV+U4PyHwtVUvpm6/kj+ob9Wr+7gRLt85rW+lko0T4/uuzHfpa+hdrne/oFG1gYXQ==
+  </data>
+ </layer>
+ <objectgroup name="CollisionLayer1" width="80" height="30">
+  <object x="64" y="384" width="464" height="32"/>
+  <object x="592" y="384" width="128" height="32"/>
+  <object x="32" y="16" width="32" height="400"/>
+  <object x="64" y="16" width="1152" height="32"/>
+  <object x="784" y="384" width="432" height="32"/>
+  <object x="1216" y="16" width="32" height="400"/>
+  <object x="496" y="416" width="32" height="64"/>
+  <object x="592" y="416" width="32" height="64"/>
+  <object x="688" y="416" width="32" height="64"/>
+  <object x="784" y="416" width="32" height="64"/>
+  <object x="528" y="464" width="64" height="16"/>
+  <object x="720" y="464" width="64" height="16"/>
+  <object x="240" y="336" width="64" height="16"/>
+  <object x="336" y="304" width="64" height="16"/>
+  <object x="432" y="272" width="64" height="16"/>
+  <object x="560" y="208" width="208" height="16"/>
+  <object x="272" y="144" width="16" height="16"/>
+  <object x="352" y="144" width="16" height="16"/>
+  <object x="416" y="144" width="16" height="16"/>
+  <object x="464" y="144" width="16" height="16"/>
+ </objectgroup>
+</map>
