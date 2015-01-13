@@ -31,7 +31,6 @@ public class Player extends ActorJash {
 		FRICTION = 15f;
 		
 		MOVESPEED = 1500f;
-
 		
 		walkAnimation = new Animation(100f, getRegion());
 		jumpAnimation = new Animation(100f, getRegion());
@@ -184,6 +183,11 @@ public class Player extends ActorJash {
 	 */
 	public void respawn(){
 		setPosition(checkpoint.getX(), checkpoint.getY());
+	}
+	
+	public void die(){
+		// funcion de perder vida
+		respawn();
 	}
 	
 	public void setCheckpoint(Checkpoint checkpoint){

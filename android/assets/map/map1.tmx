@@ -33,5 +33,6 @@
  <objectgroup name="EnemyLayer1" width="80" height="30">
   <object name="crab" x="592" y="188"/>
   <object name="crab" x="726" y="191"/>
+  <object name="crab" x="195" y="67"/>
  </objectgroup>
 </map>

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -42,11 +43,10 @@ public class Shoot extends Actor{
 		
 		if(rightDirection){
 			facing = Facing.RIGHT;
-			velocity = new Vector2(190f, 150f);
-		}
-		else{
+			velocity = new Vector2(150f, 150f);
+		}else{
 			facing = Facing.LEFT;
-			velocity = new Vector2(-190f, 150f);	
+			velocity = new Vector2(-150f, 150f);	
 		}
 		
 		GRAVITY = 700f;
@@ -73,19 +73,17 @@ public class Shoot extends Actor{
 		
 	}	
 	
-	public void update(float delta){
-		if(!isDestroying()){
-			updateX(delta);
-			updateY(delta);
-		}else{
+	public void update(float delta){		
+		updateX(delta);
+		updateY(delta);
+		
+		if(isDestroying()){			
 			if(destroyAnim.isAnimationFinished(animationTime)){
 				destroyed = true;
 			}
 			
 			region = destroyAnim.getKeyFrame(animationTime, false);
 			animationTime += delta;
-			
-			
 		}
 	}
 	
@@ -94,9 +92,19 @@ public class Shoot extends Actor{
 	}
 	
 	public void updateY(float delta){	
-		velocity.y -= GRAVITY * delta;			
+		if(!isDestroying())
+			velocity.y -= GRAVITY * delta;
+		
 		setY(getY() + velocity.y * delta);
 	}	
+	
+	@Override
+	public void drawDebug(ShapeRenderer shaper) {		
+		shaper.setColor(0, 0, 0, 1);
+		
+		Rectangle r = getCollisionBounds();
+		shaper.rect(r.x, r.y, r.width, r.height);	
+	}
 	
 	public void setDestroyAnim(float duration, Array<TextureRegion> regions){
 		destroyAnim = new Animation(duration, regions);
@@ -110,8 +118,7 @@ public class Shoot extends Actor{
 	
 	public TextureRegion getRegion(){
 		return region;
-	}
-	
+	}	
 	
 	public void setCollisionBounds(Rectangle bounds){
 		collisionBounds.set(bounds);
@@ -127,7 +134,7 @@ public class Shoot extends Actor{
 	protected void positionChanged() {
 		updateCollisionBounds();
 	}
-
+	
 	protected void updateCollisionBounds() {		
 		collisionBounds.x = getX() + boundsDistanceX;
 		collisionBounds.y = getY() + boundsDistanceY;			
@@ -143,6 +150,7 @@ public class Shoot extends Actor{
 	
 	public void destroy(){
 		destroying = true;
+		setVelocity(getVelocity().x * 0.05f, getVelocity().y * 0.05f);
 	}
 	
 	public boolean isDestroying(){
@@ -151,6 +159,10 @@ public class Shoot extends Actor{
 	
 	public boolean isDestroyed(){
 		return destroyed;
+	}
+	
+	public void setVelocity(float x, float y){
+		velocity.set(x, y);		
 	}
 	
 	

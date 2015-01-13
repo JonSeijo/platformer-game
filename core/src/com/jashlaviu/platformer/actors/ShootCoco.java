@@ -6,10 +6,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
-public class CocoShoot extends Shoot {
+public class ShootCoco extends Shoot {
 
-	public CocoShoot(float x, float y, boolean rightDirection) {
-		super(x, y, rightDirection);		
+	public ShootCoco(float x, float y, boolean rightDirection) {
+		super(x, y, rightDirection);	
+		
+		//Set velocity in both directions
+		if(rightDirection) setVelocity(150f, 150f);
+		else setVelocity(-150f, 150f);
+		
 		
 		Texture shootTexture = new Texture(Gdx.files.internal("shoot1.png"));		
 		TextureRegion normalRegion = new TextureRegion(shootTexture, 0, 0, 8, 8); 
@@ -30,7 +35,7 @@ public class CocoShoot extends Shoot {
 		destroyRegions.add(destroy6);
 		
 		setRegion(normalRegion);				
-		setCollisionBounds(new Rectangle(getX()-2, getY()-2, getWidth()+6, getHeight()+6));
+		setCollisionBounds(new Rectangle(getX(), getY(), getWidth(), getHeight()));
 		setDestroyAnim(0.03f, destroyRegions);
 		
 		

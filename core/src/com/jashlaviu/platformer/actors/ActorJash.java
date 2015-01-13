@@ -65,7 +65,9 @@ public class ActorJash extends Actor{
 	}	
 	
 	@Override
-	public void drawDebug(ShapeRenderer shaper) {		
+	public void drawDebug(ShapeRenderer shaper) {
+		shaper.setColor(0, 0, 0, 1);
+		
 		Rectangle r = getCollisionBounds();
 		shaper.rect(r.x, r.y, r.width, r.height);	
 	}

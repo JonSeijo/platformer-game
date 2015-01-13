@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.jashlaviu.platformer.actors.Checkpoint;
-import com.jashlaviu.platformer.actors.CocoShoot;
+import com.jashlaviu.platformer.actors.ShootCoco;
 import com.jashlaviu.platformer.actors.Enemy;
 import com.jashlaviu.platformer.actors.EnemyCrab;
 import com.jashlaviu.platformer.actors.Player;
@@ -47,9 +47,7 @@ public class GameLogic {
 		stage = gameScreen.getStage();
 		
 		level = 1;		
-		loadLevel(level);		
-		
-
+		loadLevel(level);	
 		
 		player = new Player(checkpoints.get(0));
 		stage.addActor(player);		
@@ -58,10 +56,9 @@ public class GameLogic {
 	public void update(float delta){
 		handleInput(delta);
 		
-		playerLogic(delta);	
-		enemiesLogic(delta);
-		shootsLogic(delta);		
-
+		playerLogic(delta);  //Update, map collision, enemy collision		
+		enemiesLogic(delta); //Update, map collision		
+		shootsLogic(delta);	 //Update, map collision and enemy collision		
 		
 		//System.out.println("vel x: " + player.getVelocity().x);
 		gameScreen.getCamera().position.x = MathUtils.round(10f * (player.getX()+20)) / 10f;
@@ -90,43 +87,68 @@ public class GameLogic {
 	}
 	
 	private void shootsLogic(float delta){		
-		Iterator iter = shoots.iterator();
-		while(iter.hasNext()){
-			Shoot shoot = (Shoot)iter.next();
+		Iterator shootIter = shoots.iterator();
+		while(shootIter.hasNext()){
+			Shoot shoot = (Shoot)shootIter.next();
 			
 			shoot.update(delta);
+			Rectangle sBounds = shoot.getCollisionBounds();
 			
 			if(shoot.isDestroyed()){
 				shoot.remove();
-				iter.remove();
+				shootIter.remove();
 			}
 			
 			for(Rectangle mapBounds : mapCollisionBounds){
-				if(shoot.getCollisionBounds().overlaps(mapBounds)){
+				if(sBounds.overlaps(mapBounds)){
 					if(!shoot.isDestroying()){	
-						shoot.update(delta);
+						//shoot.update(delta);
 						shoot.destroy();
 					}
 				}
 			}
+			
+			Iterator enemyIter = enemies.iterator();
+			while(enemyIter.hasNext()){
+				Enemy enemy = (Enemy)enemyIter.next();
+				
+				if(sBounds.overlaps(enemy.getCollisionBounds())){
+					if(!shoot.isDestroying()){	
+						//shoot.update(delta);
+						shoot.destroy();
+						
+						enemy.remove();
+						enemyIter.remove();
+					}
+				}				
+				
+			}
+			
 		}
 	}	
 
 	private void playerLogic(float delta) {
-		Rectangle aBounds = player.getCollisionBounds();
+		Rectangle pBounds = player.getCollisionBounds();
 		
 		//Updates every actor X position
 		player.updateX(delta);			
-		handleXcollision(player, aBounds);	
+		handleXmapCollision(player, pBounds);	
 		
 		//Updates every actor Y position
 		player.updateY(delta);			
-		handleYcollision(player, aBounds);	
+		handleYmapCollision(player, pBounds);
+		
+		
+		for(Enemy enemy : enemies){
+			if(pBounds.overlaps(enemy.getCollisionBounds())){
+				player.die();
+			}
+		}
 		
 		player.updateRegion(delta);
 	}
 
-	private void handleYcollision(Player player, Rectangle aBounds) {
+	private void handleYmapCollision(Player player, Rectangle aBounds) {
 		boolean air = true;
 		for(Rectangle mapBounds : mapCollisionBounds){
 			if(aBounds.overlaps(mapBounds)){
@@ -150,7 +172,7 @@ public class GameLogic {
 
 	}
 
-	private void handleXcollision(Player player, Rectangle aBounds) {
+	private void handleXmapCollision(Player player, Rectangle aBounds) {
 		for(Rectangle mapBounds : mapCollisionBounds){
 			if(aBounds.overlaps(mapBounds)){
 				if(player.getVelocity().x > 0){
@@ -188,13 +210,13 @@ public class GameLogic {
 		}		
 		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
-			player.respawn();
+		//	player.respawn();
 		}
 		
 	}
 	
 	private void shoot(){		
-		CocoShoot shoot = new CocoShoot(player.getX() + 12, player.getY() + 15, player.isFacingRight());
+		ShootCoco shoot = new ShootCoco(player.getX() + 12, player.getY() + 15, player.isFacingRight());
 		shoot.addVelocity(player.getVelocity().x,0);
 		
 		shoots.add(shoot);

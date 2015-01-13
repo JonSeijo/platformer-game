@@ -16,7 +16,7 @@ public class EnemyCrab extends Enemy{
 		TextureRegion normalCrabRegion = new TextureRegion(crabTexture, 0, 80, 32, 16);
 		
 		setRegion(normalCrabRegion);
-		setCollisionBounds(new Rectangle(getX(), getY(), getWidth(), 16));
+		setCollisionBounds(new Rectangle(getX()+5, getY()+1, getWidth()-10, 12));
 	}
 
 }
