@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.jashlaviu.platformer.actors.Checkpoint;
 import com.jashlaviu.platformer.actors.CocoShoot;
+import com.jashlaviu.platformer.actors.Enemy;
+import com.jashlaviu.platformer.actors.EnemyCrab;
 import com.jashlaviu.platformer.actors.Player;
 import com.jashlaviu.platformer.actors.Player.State;
 import com.jashlaviu.platformer.actors.Shoot;
@@ -28,6 +30,7 @@ public class GameLogic {
 	private Stage stage;		
 	private Player player;	
 	private Array<Shoot> shoots;
+	private Array<Enemy> enemies;
 	private Array<Checkpoint> checkpoints;
 
 	private int level;
@@ -37,14 +40,16 @@ public class GameLogic {
 		
 		mapCollisionBounds = new Array<Rectangle>();
 		checkpoints = new Array<Checkpoint>();
+		enemies = new Array<Enemy>();
 		shoots = new Array<Shoot>();
 		
 		checkpoints.add(new Checkpoint(100, 200));
+		stage = gameScreen.getStage();
 		
 		level = 1;		
 		loadLevel(level);		
 		
-		stage = gameScreen.getStage();
+
 		
 		player = new Player(checkpoints.get(0));
 		stage.addActor(player);		
@@ -53,8 +58,10 @@ public class GameLogic {
 	public void update(float delta){
 		handleInput(delta);
 		
-		playerLogic(delta);		
+		playerLogic(delta);	
+		enemiesLogic(delta);
 		shootsLogic(delta);		
+
 		
 		//System.out.println("vel x: " + player.getVelocity().x);
 		gameScreen.getCamera().position.x = MathUtils.round(10f * (player.getX()+20)) / 10f;
@@ -62,8 +69,27 @@ public class GameLogic {
 		
 	}
 	
-	private void shootsLogic(float delta){
-		
+	private void enemiesLogic(float delta){
+		Iterator iter = enemies.iterator();
+		while(iter.hasNext()){
+			Enemy enemy = (Enemy)iter.next();
+			
+			enemy.updateX(delta);
+			enemy.updateY(delta);
+			
+			Rectangle eBounds = enemy.getCollisionBounds();
+			
+			for(Rectangle mapBounds : mapCollisionBounds){
+				if(eBounds.overlaps(mapBounds)){
+					enemy.setY(mapBounds.y + mapBounds.height - enemy.getBoundsDistanceY());
+					enemy.getVelocity().y = 0;
+				}
+			}
+			
+		}
+	}
+	
+	private void shootsLogic(float delta){		
 		Iterator iter = shoots.iterator();
 		while(iter.hasNext()){
 			Shoot shoot = (Shoot)iter.next();
@@ -84,7 +110,7 @@ public class GameLogic {
 				}
 			}
 		}
-	}
+	}	
 
 	private void playerLogic(float delta) {
 		Rectangle aBounds = player.getCollisionBounds();
@@ -185,7 +211,29 @@ public class GameLogic {
 		param.textureMagFilter = param.textureMagFilter.Nearest;
 		
 		map = mapLoader.load("map/map" + level + ".tmx", param);
-		MapLayer collisionLayer = map.getLayers().get("CollisionLayer1");
+		
+		loadMapBounds(map.getLayers().get("CollisionLayer1"));
+		loadEnemies(map.getLayers().get("EnemyLayer1"));
+		
+		
+	}
+	
+	private void loadEnemies(MapLayer enemyLayer){
+		MapObjects mapObjects = enemyLayer.getObjects();
+		
+		for(RectangleMapObject object : 
+			mapObjects.getByType(RectangleMapObject.class)){
+			
+			if(object.getName().equals(EnemyCrab.name)){
+
+				EnemyCrab enemyCrab = new EnemyCrab(object.getRectangle().x, object.getRectangle().y);
+				stage.addActor(enemyCrab);
+				enemies.add(enemyCrab);			
+			}
+		}
+	}
+	
+	private void loadMapBounds(MapLayer collisionLayer){
 		MapObjects mapObjects = collisionLayer.getObjects();
 		
 		for(RectangleMapObject object : 
@@ -193,7 +241,7 @@ public class GameLogic {
 			
 			Rectangle rec = object.getRectangle();
 			mapCollisionBounds.add(new Rectangle(rec));			
-		}		
+		}
 	}
 	
 	public void dispose(){
