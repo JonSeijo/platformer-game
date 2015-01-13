@@ -18,7 +18,6 @@ public class ActorJash extends Actor{
 	
 	protected TextureRegion region, normalRegion;
 	protected Vector2 velocity;
-	protected final float GRAVITY;
 	
 	protected enum Facing{LEFT, RIGHT};
 	protected Facing facing;
@@ -33,6 +32,7 @@ public class ActorJash extends Actor{
 	protected float boundsDistanceX, boundsDistanceY;
 	protected float animationTime;
 	
+	protected final float GRAVITY;
 	protected float FRICTION, MOVESPEED, MAX_VEL_X, MAX_VEL_Y;
 	protected boolean movingLeft, movingRight;
 	
@@ -64,11 +64,7 @@ public class ActorJash extends Actor{
 		
 		setDebug(false);
 	}
-	
-	@Override
-	public void act(float delta) {
-		super.act(delta);			
-	}
+
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {	
@@ -77,14 +73,14 @@ public class ActorJash extends Actor{
 		batch.setColor(col.r, col.g, col.b, col.a * parentAlpha);
 		
 		if(facing == Facing.RIGHT){
-			batch.draw(getRegion(), getX(), getY(), 
+			batch.draw(getRegion(), MathUtils.round(10f * (getX())) / 10f, MathUtils.round(10f * (getY())) / 10f, 
 					getOriginX(), getOriginY(), getWidth(), getHeight(), 
 					getScaleX(), getScaleY(), getRotation());
 		}
 		
 		// drawing with -width flips the image.
 		else if(facing == Facing.LEFT){
-			batch.draw(getRegion(), getX() + getWidth(), getY(), 
+			batch.draw(getRegion(), MathUtils.round(10f * (getX()+ getWidth())) / 10f, MathUtils.round(10f * (getY())) / 10f, 
 					getOriginX(), getOriginY(), -getWidth(), getHeight(), 
 					getScaleX(), getScaleY(), getRotation());
 		}
@@ -170,7 +166,7 @@ public class ActorJash extends Actor{
 	}
 	
 	public void updateY(float delta){	
-		//if(state == State.JUMPING){
+	//	if(state == State.JUMPING){
 			velocity.y -= GRAVITY * delta;		
 		//}		
 	
@@ -214,11 +210,15 @@ public class ActorJash extends Actor{
 	}
 	
 	public void setState(State state){
-		this.state = state;	
+		this.state = state;			
+	}
 	
-		if(state == State.JUMPING){
-			animationTime = 0;
-		}	
+	public Facing getFacing(){
+		return facing;
+	}
+	
+	public boolean isFacingRight(){
+		return facing == Facing.RIGHT;
 	}
 	
 	public void setWalkAnimation(float duration, Array<TextureRegion> regions){

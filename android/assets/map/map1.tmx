@@ -5,7 +5,7 @@
  </tileset>
  <layer name="Tile Layer 1" width="80" height="30">
   <data encoding="base64" compression="zlib">
-   eJztl20KgzAQBWOq9QRt79CD9f5HaH5EkCVf9W26Gt7AEDQBYVgCrs65lVI6hKQM+2GwHwb7YbAfBvth9Oj3TLx7ZJ4/ib0rwfnDYD8M9sM4c79X0AenqN+tPvGcund7c+Z+V4D9MNgPw7Lf/n6zuLs04Pxh/KPfCHOWg/OHodlv5DnLwfnD+LXfLTjHNcVS2GvZL7F9+whLdI6rFrV+U4PyHwtVUvpm6/kj+ob9Wr+7gRLt85rW+lko0T4/uuzHfpa+hdrne/oFG1gYXQ==
+   eJztlwsKgzAQBWOq9QS2d+ht+rlCa+9/gi40BQn51d2YGN7AEDRBYYgBR6XUCCFsQhAG/XigHw/044F+PNCPR45+J8e9yXP9csztCew/HujHA/141NzvTGqyM+rFqB3XrnM3NzX32wPoxwP9eJTstzzfSpxdEmzR70reyDv5EHpmLWzR76m+/xkz+RZ6Zi1I9vPtsxa+Ux+S/VreZz4k+7W8z3z82+9A9mZ0MQTmUuZD/N69hsHYm1GKWL8uQfsfi6tN6J2p69eoE+Zj/Y4FtJFeL2msXwltpNe3LvqhX0kvltLrc/oBYV8eJQ==
   </data>
  </layer>
  <objectgroup name="CollisionLayer1" width="80" height="30">
@@ -21,8 +21,8 @@
   <object x="784" y="416" width="32" height="64"/>
   <object x="528" y="464" width="64" height="16"/>
   <object x="720" y="464" width="64" height="16"/>
-  <object x="240" y="336" width="64" height="16"/>
-  <object x="336" y="304" width="64" height="16"/>
+  <object x="240" y="352" width="64" height="16"/>
+  <object x="336" y="320" width="64" height="16"/>
   <object x="432" y="272" width="64" height="16"/>
   <object x="560" y="208" width="208" height="16"/>
   <object x="272" y="144" width="16" height="16"/>

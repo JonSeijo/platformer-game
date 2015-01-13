@@ -25,7 +25,7 @@ public class TestScreen extends ScreenJash{
 		mapRenderer = new OrthogonalTiledMapRenderer(gameLogic.getMap(), batch);
 		mapRenderer.setView(camera);
 		
-		camera.zoom = 0.25f;
+		camera.zoom = 0.35f;
 		camera.position.x = 190;
 		camera.position.y = 130;
 	
