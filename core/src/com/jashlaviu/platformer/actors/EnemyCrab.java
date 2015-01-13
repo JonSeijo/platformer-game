@@ -7,10 +7,12 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class EnemyCrab extends Enemy{
 	
-	public final static String name = "crab";
+	public static final String name = "crab";
 
 	public EnemyCrab(float posX, float posY) {
-		super(posX, posY);
+		super(posX, posY);		
+		setType(Type.crab);		
+		setCustomName(name);
 		
 		Texture crabTexture = new Texture(Gdx.files.internal("enemy-1.png"));
 		TextureRegion normalCrabRegion = new TextureRegion(crabTexture, 0, 80, 32, 16);

@@ -19,7 +19,7 @@ public class ActorJash extends Actor{
 	protected TextureRegion region, normalRegion;
 	protected Vector2 velocity;
 	
-	protected enum Facing{LEFT, RIGHT};
+	public static enum Facing{LEFT, RIGHT};	
 	protected Facing facing;
 	
 	protected Rectangle collisionBounds;
@@ -99,10 +99,6 @@ public class ActorJash extends Actor{
 		collisionBounds.y = getY() + boundsDistanceY;			
 	}
 	
-	protected void setFacing(Facing newFacing){
-		facing = newFacing;		
-	}
-	
 	public TextureRegion getRegion(){
 		return region;
 	}
@@ -122,7 +118,11 @@ public class ActorJash extends Actor{
 	
 	public void applyGravity(float delta){
 		velocity.y -= GRAVITY * delta;		
-	}
+	}	
+	
+	public void setFacing(Facing newFacing){
+		facing = newFacing;		
+	}	
 	
 	public Facing getFacing(){
 		return facing;

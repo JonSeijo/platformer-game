@@ -4,9 +4,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Enemy extends ActorJash{
-
+	
+	public static enum Type{
+		notype, crab
+	}
+	private Type type;
+	
+	private String customName;
+	
 	public Enemy(float posX, float posY) {
-		super(posX, posY);
+		super(posX, posY);	
+		type = Type.notype;
+		customName = "noname";
 	}
 	
 	@Override
@@ -16,5 +25,26 @@ public class Enemy extends ActorJash{
 		Rectangle r = getCollisionBounds();
 		shaper.rect(r.x, r.y, r.width, r.height);
 	}
+	
+	protected void setType(Type type){
+		this.type = type;
+	}
+	
+	public Type getType(){
+		if(type == Type.notype)
+			System.out.println("NO TYPE ASSIGNED");
+		
+		return type;
+	}
+	
+	protected void setCustomName(String name){
+		this.customName = name;
+	}
+	
+	public String getCustomName(){
+		return customName;
+	}
+	
+	
 
 }

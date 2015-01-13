@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.jashlaviu.platformer.actors.ActorJash;
 import com.jashlaviu.platformer.actors.Checkpoint;
 import com.jashlaviu.platformer.actors.ShootCoco;
 import com.jashlaviu.platformer.actors.Enemy;
@@ -74,6 +75,11 @@ public class GameLogic {
 			enemy.updateX(delta);
 			enemy.updateY(delta);
 			
+			//Crabs don't move, so look to the player position
+			if(enemy.getType() == Enemy.Type.crab){
+				enemy.setFacing( (player.getX() < enemy.getX()) ? 
+						ActorJash.Facing.RIGHT : ActorJash.Facing.LEFT);			
+			}
 			Rectangle eBounds = enemy.getCollisionBounds();
 			
 			for(Rectangle mapBounds : mapCollisionBounds){
