@@ -22,46 +22,23 @@ public class ActorJash extends Actor{
 	protected enum Facing{LEFT, RIGHT};
 	protected Facing facing;
 	
-	public enum State{
-		WALKING, JUMPING, LANDING
-	}
-	protected State state;
-	
-	protected Animation walkAnimation, jumpAnimation, fallAnimation;	
 	protected Rectangle collisionBounds;
 	protected float boundsDistanceX, boundsDistanceY;
 	protected float animationTime;
 	
-	protected final float GRAVITY;
-	protected float FRICTION, MOVESPEED, MAX_VEL_X, MAX_VEL_Y;
-	protected boolean movingLeft, movingRight;
+	protected final float GRAVITY = 700f;
+
 	
 	public ActorJash(float posX, float posY){
 		setRegion(new TextureRegion(new Texture(Gdx.files.internal("notexture.png"))));
-		setNormalRegion(getRegion());
-		
+				
 		collisionBounds = new Rectangle();
 		setCollisionBounds(new Rectangle(getX(), getY(), getWidth(), getHeight()));
-
-		velocity = new Vector2(0, 0);
 		
-		setPosition(posX, posY);		
-	
-		MAX_VEL_X = 150f;
-		//FRICTION = .20f;  * pow		
-		FRICTION = 15f;
+		setPosition(posX, posY);
 		
-		//MOVESPEED = 1700f;
-		MOVESPEED = 1500f;
-		GRAVITY = 700f;
-		
-		walkAnimation = new Animation(100f, getRegion());
-		jumpAnimation = new Animation(100f, getRegion());
-		fallAnimation = new Animation(100f, getRegion());
-		
+		velocity = new Vector2(0, 0);		
 		facing = Facing.RIGHT;	
-		state = State.JUMPING;
-		
 		setDebug(false);
 	}
 
@@ -93,20 +70,7 @@ public class ActorJash extends Actor{
 		shaper.rect(r.x, r.y, r.width, r.height);	
 	}
 	
-	public void moveRight(){
-		setFacing(Facing.RIGHT);	
-		setMovingRight(true);
-	}
-	
-	public void moveLeft(){
-		setFacing(Facing.LEFT);
-		setMovingLeft(true);
-	}
-	
-	public void setNormalRegion(TextureRegion newNormalRegion){
-		normalRegion = newNormalRegion;
-		setRegion(normalRegion);
-	}
+
 	
 	public void setRegion(TextureRegion newRegion){
 		region = newRegion;
@@ -145,72 +109,17 @@ public class ActorJash extends Actor{
 		return velocity;
 	}
 	
-	
-	public void applyGravity(float delta){
-		velocity.y -= GRAVITY * delta;		
+	public void updateX(float delta){
+
 	}
 	
-	public void updateX(float delta){		
-		if(movingLeft) velocity.x -= MOVESPEED * delta;	
-		if(movingRight)velocity.x += MOVESPEED * delta;		
-		
-		velocity.x *= Math.exp((double)FRICTION * -delta);  //Aplly friction. This fixes  direfent friction in different fps
-		
-		if(Math.abs(velocity.x) < 2f) velocity.x = 0;	
-		
-		if(velocity.x > MAX_VEL_X) velocity.x = MAX_VEL_X;
-		else if(velocity.x < -MAX_VEL_X)  velocity.x = -MAX_VEL_X;
-		
-		setX(getX() + velocity.x  * delta );
-		
-	}
-	
-	public void updateY(float delta){	
-	//	if(state == State.JUMPING){
-			velocity.y -= GRAVITY * delta;		
-		//}		
-	
+	public void updateY(float delta){
+		velocity.y -= GRAVITY * delta;
 		setY(getY() + velocity.y * delta);
 	}
 	
-	public void updateRegion(float delta){
-		if(state == State.WALKING){
-			if(velocity.x == 0){
-				animationTime = 0;
-				setRegion(normalRegion);				
-			}else{
-				animationTime += delta;			
-				setRegion(walkAnimation.getKeyFrame(animationTime, true));
-			}
-		}
-		else if(state == State.JUMPING){
-			if(velocity.y == 0){
-				setRegion(normalRegion);				
-			}else if(velocity.y > 0){
-				animationTime += delta;
-				setRegion(jumpAnimation.getKeyFrame(animationTime, true));
-			}else{
-				setRegion(fallAnimation.getKeyFrame(0, false));
-			}
-		}
-	}
-	
-	
-	public void setMovingLeft(boolean moving){
-		movingLeft = moving;
-	}
-	
-	public void setMovingRight(boolean moving){
-		movingRight = moving;
-	}
-	
-	public void jump(){
-		velocity.y = 250;
-		setState(State.JUMPING);
-	}
-	
-	public void setState(State state){
-		this.state = state;			
+	public void applyGravity(float delta){
+		velocity.y -= GRAVITY * delta;		
 	}
 	
 	public Facing getFacing(){
@@ -221,21 +130,6 @@ public class ActorJash extends Actor{
 		return facing == Facing.RIGHT;
 	}
 	
-	public void setWalkAnimation(float duration, Array<TextureRegion> regions){
-		walkAnimation = new Animation(duration, regions);
-		animationTime = 0;
-	}
-	
-	public void setJumpAnimation(float duration, Array<TextureRegion> regions){
-		jumpAnimation = new Animation(duration, regions);
-		animationTime = 0;
-	}
-	
-	public void setFallAnimation(float duration, Array<TextureRegion> regions){
-		fallAnimation = new Animation(duration, regions);
-		animationTime = 0;
-	}
-	
 	public float getBoundsDistanceX(){
 		return boundsDistanceX;
 	}
@@ -243,7 +137,5 @@ public class ActorJash extends Actor{
 	public float getBoundsDistanceY(){
 		return boundsDistanceY;
 	}
-
-
 
 }

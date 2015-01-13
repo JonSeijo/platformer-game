@@ -1,5 +1,7 @@
 package com.jashlaviu.platformer;
 
+import java.util.Iterator;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.maps.MapLayer;
@@ -9,13 +11,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.jashlaviu.platformer.actors.ActorJash;
-import com.jashlaviu.platformer.actors.ActorJash.State;
+import com.jashlaviu.platformer.actors.Checkpoint;
 import com.jashlaviu.platformer.actors.CocoShoot;
 import com.jashlaviu.platformer.actors.Player;
+import com.jashlaviu.platformer.actors.Player.State;
 import com.jashlaviu.platformer.actors.Shoot;
 import com.jashlaviu.platformer.screens.TestScreen;
 
@@ -27,21 +28,25 @@ public class GameLogic {
 	private Stage stage;		
 	private Player player;	
 	private Array<Shoot> shoots;
-	
+	private Array<Checkpoint> checkpoints;
+
 	private int level;
 	
 	public GameLogic(TestScreen gameScreen) {
 		this.gameScreen = gameScreen;	
 		
 		mapCollisionBounds = new Array<Rectangle>();
+		checkpoints = new Array<Checkpoint>();
 		shoots = new Array<Shoot>();
+		
+		checkpoints.add(new Checkpoint(100, 200));
 		
 		level = 1;		
 		loadLevel(level);		
 		
 		stage = gameScreen.getStage();
 		
-		player = new Player(100,300);
+		player = new Player(checkpoints.get(0));
 		stage.addActor(player);		
 	}
 	
@@ -49,7 +54,7 @@ public class GameLogic {
 		handleInput(delta);
 		
 		playerLogic(delta);		
-		shootsLogic(delta);
+		shootsLogic(delta);		
 		
 		//System.out.println("vel x: " + player.getVelocity().x);
 		gameScreen.getCamera().position.x = MathUtils.round(10f * (player.getX()+20)) / 10f;
@@ -58,9 +63,26 @@ public class GameLogic {
 	}
 	
 	private void shootsLogic(float delta){
-		for(Shoot shoot : shoots){
-			shoot.updateX(delta);
-			shoot.updateY(delta);
+		
+		Iterator iter = shoots.iterator();
+		while(iter.hasNext()){
+			Shoot shoot = (Shoot)iter.next();
+			
+			shoot.update(delta);
+			
+			if(shoot.isDestroyed()){
+				shoot.remove();
+				iter.remove();
+			}
+			
+			for(Rectangle mapBounds : mapCollisionBounds){
+				if(shoot.getCollisionBounds().overlaps(mapBounds)){
+					if(!shoot.isDestroying()){	
+						shoot.update(delta);
+						shoot.destroy();
+					}
+				}
+			}
 		}
 	}
 
@@ -78,7 +100,7 @@ public class GameLogic {
 		player.updateRegion(delta);
 	}
 
-	private void handleYcollision(ActorJash player, Rectangle aBounds) {
+	private void handleYcollision(Player player, Rectangle aBounds) {
 		boolean air = true;
 		for(Rectangle mapBounds : mapCollisionBounds){
 			if(aBounds.overlaps(mapBounds)){
@@ -102,7 +124,7 @@ public class GameLogic {
 
 	}
 
-	private void handleXcollision(ActorJash player, Rectangle aBounds) {
+	private void handleXcollision(Player player, Rectangle aBounds) {
 		for(Rectangle mapBounds : mapCollisionBounds){
 			if(aBounds.overlaps(mapBounds)){
 				if(player.getVelocity().x > 0){
@@ -139,15 +161,15 @@ public class GameLogic {
 			shoot();
 		}		
 		
+		if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
+			player.respawn();
+		}
+		
 	}
 	
-	private void shoot(){
-		System.out.println("SHOOTS FIRED LOLOLO");		
-		
+	private void shoot(){		
 		CocoShoot shoot = new CocoShoot(player.getX() + 12, player.getY() + 15, player.isFacingRight());
 		shoot.addVelocity(player.getVelocity().x,0);
-		
-		System.out.println(shoot.getVelocity().y);
 		
 		shoots.add(shoot);
 		stage.addActor(shoot);

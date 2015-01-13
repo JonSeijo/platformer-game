@@ -22,8 +22,10 @@ public class Shoot extends Actor{
 	
 	protected enum Facing{LEFT, RIGHT};
 	protected Facing facing;
+	
 	protected Animation destroyAnim, destroyAnimLeft, destroyAnimRight, destroyAnimDown;
 	protected float animationTime;	
+	protected boolean destroying, destroyed;
 	
 	protected Vector2 velocity;
 	protected final float GRAVITY;
@@ -71,6 +73,22 @@ public class Shoot extends Actor{
 		
 	}	
 	
+	public void update(float delta){
+		if(!isDestroying()){
+			updateX(delta);
+			updateY(delta);
+		}else{
+			if(destroyAnim.isAnimationFinished(animationTime)){
+				destroyed = true;
+			}
+			
+			region = destroyAnim.getKeyFrame(animationTime, false);
+			animationTime += delta;
+			
+			
+		}
+	}
+	
 	public void updateX(float delta){	
 		setX(getX() + velocity.x  * delta );		
 	}
@@ -78,7 +96,7 @@ public class Shoot extends Actor{
 	public void updateY(float delta){	
 		velocity.y -= GRAVITY * delta;			
 		setY(getY() + velocity.y * delta);
-	}
+	}	
 	
 	public void setDestroyAnim(float duration, Array<TextureRegion> regions){
 		destroyAnim = new Animation(duration, regions);
@@ -121,6 +139,18 @@ public class Shoot extends Actor{
 	
 	public void addVelocity(float x, float y){
 		velocity.add(x, y);
+	}
+	
+	public void destroy(){
+		destroying = true;
+	}
+	
+	public boolean isDestroying(){
+		return destroying;
+	}
+	
+	public boolean isDestroyed(){
+		return destroyed;
 	}
 	
 	
