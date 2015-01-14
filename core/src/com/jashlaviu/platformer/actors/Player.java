@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.jashlaviu.platformer.actors.ActorJash.Facing;
 
 public class Player extends ActorJash {
 	
@@ -175,8 +174,6 @@ public class Player extends ActorJash {
 		fallAnimation = new Animation(duration, regions);
 		animationTime = 0;
 	}
-	
-	
 	
 	/**
 	 * Resets player position to the stored checkpoint

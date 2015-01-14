@@ -3,13 +3,11 @@ package com.jashlaviu.platformer;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jashlaviu.platformer.screens.TestScreen;
 
 public class PlatformerGame extends Game {
 	private SpriteBatch batch;
 	private ShapeRenderer shaper;
-	private Viewport viewport;
 
 	@Override
 	public void create() {

@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -15,9 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.jashlaviu.platformer.actors.ActorJash;
 import com.jashlaviu.platformer.actors.Checkpoint;
+import com.jashlaviu.platformer.actors.EnemyCrab;
 import com.jashlaviu.platformer.actors.ShootCoco;
 import com.jashlaviu.platformer.actors.Enemy;
-import com.jashlaviu.platformer.actors.EnemyCrab;
+import com.jashlaviu.platformer.actors.EnemySnail;
 import com.jashlaviu.platformer.actors.Player;
 import com.jashlaviu.platformer.actors.Player.State;
 import com.jashlaviu.platformer.actors.Shoot;
@@ -68,32 +70,47 @@ public class GameLogic {
 	}
 	
 	private void enemiesLogic(float delta){
-		Iterator iter = enemies.iterator();
+		Iterator<Enemy> iter = enemies.iterator();
 		while(iter.hasNext()){
 			Enemy enemy = (Enemy)iter.next();
 			
-			enemy.updateX(delta);
-			enemy.updateY(delta);
-			
-			//Crabs don't move, so look to the player position
-			if(enemy.getType() == Enemy.Type.crab){
-				enemy.setFacing( (player.getX() < enemy.getX()) ? 
+			//Snails don't move, so look to the player position
+			if(enemy.getType() == Enemy.Type.snail){
+				enemy.setFacing( (player.getX() > enemy.getX()) ? 
 						ActorJash.Facing.RIGHT : ActorJash.Facing.LEFT);			
-			}
+			}				
+			
 			Rectangle eBounds = enemy.getCollisionBounds();
+			
+			
+			enemy.updateY(delta);		
+			enemy.updateX(delta);	
 			
 			for(Rectangle mapBounds : mapCollisionBounds){
 				if(eBounds.overlaps(mapBounds)){
 					enemy.setY(mapBounds.y + mapBounds.height - enemy.getBoundsDistanceY());
 					enemy.getVelocity().y = 0;
-				}
+					
+					if(eBounds.getX() < mapBounds.getX()){
+						eBounds.x = mapBounds.getX();
+						enemy.flipDirectionX();
+						enemy.updateX(delta);
+					}else if(eBounds.getX()+eBounds.getWidth() > mapBounds.getX()+mapBounds.getWidth()){
+						eBounds.x = mapBounds.getX() + mapBounds.getWidth() - eBounds.width;
+						enemy.flipDirectionX();
+						enemy.updateX(delta);
+					}
+					break;
+				}				
 			}
+				
+
 			
 		}
 	}
 	
 	private void shootsLogic(float delta){		
-		Iterator shootIter = shoots.iterator();
+		Iterator<Shoot> shootIter = shoots.iterator();
 		while(shootIter.hasNext()){
 			Shoot shoot = (Shoot)shootIter.next();
 			
@@ -114,7 +131,7 @@ public class GameLogic {
 				}
 			}
 			
-			Iterator enemyIter = enemies.iterator();
+			Iterator<Enemy> enemyIter = enemies.iterator();
 			while(enemyIter.hasNext()){
 				Enemy enemy = (Enemy)enemyIter.next();
 				
@@ -235,8 +252,8 @@ public class GameLogic {
 		TmxMapLoader mapLoader = new TmxMapLoader();
 		TmxMapLoader.Parameters param = new TmxMapLoader.Parameters();
 		
-		param.textureMinFilter = param.textureMinFilter.Nearest;
-		param.textureMagFilter = param.textureMagFilter.Nearest;
+		param.textureMinFilter = TextureFilter.Nearest;
+		param.textureMagFilter = TextureFilter.Nearest;
 		
 		map = mapLoader.load("map/map" + level + ".tmx", param);
 		
@@ -252,12 +269,18 @@ public class GameLogic {
 		for(RectangleMapObject object : 
 			mapObjects.getByType(RectangleMapObject.class)){
 			
-			if(object.getName().equals(EnemyCrab.name)){
-
+			if(object.getName().equals(EnemySnail.name)){
+				EnemySnail enemySnail = new EnemySnail(object.getRectangle().x, object.getRectangle().y);
+				stage.addActor(enemySnail);
+				enemies.add(enemySnail);			
+			}else if(object.getName().equals(EnemyCrab.name)){
+				
 				EnemyCrab enemyCrab = new EnemyCrab(object.getRectangle().x, object.getRectangle().y);
 				stage.addActor(enemyCrab);
-				enemies.add(enemyCrab);			
+				enemies.add(enemyCrab);	
 			}
+			
+			
 		}
 	}
 	

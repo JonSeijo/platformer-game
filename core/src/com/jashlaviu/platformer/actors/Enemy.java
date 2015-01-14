@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Enemy extends ActorJash{
 	
 	public static enum Type{
-		notype, crab
+		notype, snail, crab
 	}
 	private Type type;
 	
@@ -35,6 +35,11 @@ public class Enemy extends ActorJash{
 			System.out.println("NO TYPE ASSIGNED");
 		
 		return type;
+	}
+	
+	public void flipDirectionX(){
+		velocity.x = -velocity.x;
+		setFacing((getFacing() == Facing.RIGHT) ? Facing.LEFT : Facing.RIGHT);
 	}
 	
 	protected void setCustomName(String name){

@@ -31,8 +31,9 @@
   <object x="464" y="144" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="EnemyLayer1" width="80" height="30">
-  <object name="crab" x="592" y="188"/>
-  <object name="crab" x="726" y="191"/>
-  <object name="crab" x="195" y="67"/>
+  <object name="snail" x="657" y="360"/>
+  <object name="snail" x="199" y="105"/>
+  <object name="crab" x="614" y="187"/>
+  <object name="crab" x="351" y="306"/>
  </objectgroup>
 </map>

@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
-import com.jashlaviu.platformer.actors.ActorJash.Facing;
 
 public class Shoot extends Actor{
 	
