@@ -252,18 +252,19 @@ public class GameLogic {
 	}
 	
 	private void shoot(){
-		ShootCoco shoot;
-		
-		if(player.getFacing() == Facing.RIGHT){
-			shoot = new ShootCoco(player.getX() + 16, player.getY() + 12);
-		}else{
-			shoot = new ShootCoco(player.getX() + 10, player.getY() + 12);
+		if(!player.isShooting()){
+			ShootCoco shoot;		
+			if(player.getFacing() == Facing.RIGHT){
+				shoot = new ShootCoco(player.getX() + 16, player.getY() + 12);
+			}else{
+				shoot = new ShootCoco(player.getX() + 10, player.getY() + 12);
+			}
+			
+			player.setShooting(true);
+			
+			shoots.add(shoot);
+			stage.addActor(shoot);
 		}
-		
-		player.setShooting(true);
-		
-		shoots.add(shoot);
-		stage.addActor(shoot);
 		
 	}
 	
