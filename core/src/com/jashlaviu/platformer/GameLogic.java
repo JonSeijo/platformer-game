@@ -21,6 +21,7 @@ import com.jashlaviu.platformer.actors.ShootCoco;
 import com.jashlaviu.platformer.actors.Enemy;
 import com.jashlaviu.platformer.actors.EnemySnail;
 import com.jashlaviu.platformer.actors.Player;
+import com.jashlaviu.platformer.actors.ActorJash.Facing;
 import com.jashlaviu.platformer.actors.Player.State;
 import com.jashlaviu.platformer.actors.Shoot;
 import com.jashlaviu.platformer.screens.TestScreen;
@@ -80,8 +81,7 @@ public class GameLogic {
 						ActorJash.Facing.RIGHT : ActorJash.Facing.LEFT);			
 			}				
 			
-			Rectangle eBounds = enemy.getCollisionBounds();
-			
+			Rectangle eBounds = enemy.getCollisionBounds();			
 			
 			enemy.updateY(delta);		
 			enemy.updateX(delta);	
@@ -103,8 +103,6 @@ public class GameLogic {
 					break;
 				}				
 			}
-				
-
 			
 		}
 	}
@@ -113,6 +111,21 @@ public class GameLogic {
 		Iterator<Shoot> shootIter = shoots.iterator();
 		while(shootIter.hasNext()){
 			Shoot shoot = (Shoot)shootIter.next();
+			
+			if(!shoot.isThrowed()){
+				if(shoot.isInDelay()){									
+					if(player.getFacing() == Facing.RIGHT){
+						shoot.setPosition(player.getX() + 16, player.getY() + 12);	
+						shoot.setFacing(Shoot.Facing.RIGHT);						
+					}else{
+						shoot.setPosition(player.getX() + 10, player.getY() + 12);
+						shoot.setFacing(Shoot.Facing.LEFT);
+					}					
+				}else{  //If not throwed and not on delay
+					shoot.setThrowed(true);	
+					shoot.addVelocity(player.getVelocity().x, 0);
+				}
+			}
 			
 			shoot.update(delta);
 			Rectangle sBounds = shoot.getCollisionBounds();
@@ -238,9 +251,16 @@ public class GameLogic {
 		
 	}
 	
-	private void shoot(){		
-		ShootCoco shoot = new ShootCoco(player.getX() + 12, player.getY() + 15, player.isFacingRight());
-		shoot.addVelocity(player.getVelocity().x,0);
+	private void shoot(){
+		ShootCoco shoot;
+		
+		if(player.getFacing() == Facing.RIGHT){
+			shoot = new ShootCoco(player.getX() + 16, player.getY() + 12);
+		}else{
+			shoot = new ShootCoco(player.getX() + 10, player.getY() + 12);
+		}
+		
+		player.setShooting(true);
 		
 		shoots.add(shoot);
 		stage.addActor(shoot);

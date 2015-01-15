@@ -30,7 +30,7 @@ public class TestScreen extends ScreenJash{
 		camera.position.y = 130;
 	
 		camera.update();		
-		stage.setDebugAll(false);
+		stage.setDebugAll(true);
 	}
 	
 	@Override

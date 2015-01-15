@@ -15,40 +15,40 @@ import com.badlogic.gdx.utils.Array;
 
 public class Shoot extends Actor{
 	
-	protected TextureRegion region;
+	protected TextureRegion region, normalRegion, emptyRegion;
 	
 	protected Rectangle collisionBounds;
 	protected float boundsDistanceX, boundsDistanceY;
 	
-	protected enum Facing{LEFT, RIGHT};
+	public static enum Facing{LEFT, RIGHT};
 	protected Facing facing;
 	
 	protected Animation destroyAnim, destroyAnimLeft, destroyAnimRight, destroyAnimDown;
 	protected float animationTime;	
+	
 	protected boolean destroying, destroyed;
+	protected boolean throwed;
 	
 	protected Vector2 velocity;
-	protected final float GRAVITY;
+	protected float delay, delayCurrent;
 	
-	public Shoot(float x, float y, boolean rightDirection){	
-		setRegion(new TextureRegion(new Texture(Gdx.files.internal("notexture.png"))));
+	protected final float GRAVITY;
+
+	
+	public Shoot(float x, float y){	
+		setRegion(new TextureRegion(new Texture(Gdx.files.internal("notexture.png"))));				
 		
 		collisionBounds = new Rectangle();
 		setCollisionBounds(new Rectangle(getX(), getY(), getWidth(), getHeight()));	
 		
-		setPosition(x, y);
+		setPosition(x, y);		
+		destroyAnim = new Animation(1f, getRegion());		
 		
-		destroyAnim = new Animation(1f, getRegion());
+		facing = Facing.RIGHT;
+		velocity = new Vector2(150f, 150f);		
 		
-		if(rightDirection){
-			facing = Facing.RIGHT;
-			velocity = new Vector2(150f, 150f);
-		}else{
-			facing = Facing.LEFT;
-			velocity = new Vector2(-150f, 150f);	
-		}
-		
-		GRAVITY = 700f;
+		GRAVITY = 700f;		
+		delay = 0.4f;
 	}
 	
 	@Override
@@ -73,8 +73,15 @@ public class Shoot extends Actor{
 	}	
 	
 	public void update(float delta){		
-		updateX(delta);
-		updateY(delta);
+		if(!isInDelay()){
+			setRegion(normalRegion);
+			updateX(delta);
+			updateY(delta);
+		}else{			
+			delayCurrent += delta;
+			setRegion(emptyRegion);
+		}
+		
 		
 		if(isDestroying()){			
 			if(destroyAnim.isAnimationFinished(animationTime)){
@@ -164,6 +171,34 @@ public class Shoot extends Actor{
 		velocity.set(x, y);		
 	}
 	
+	public void setNormalRegion(TextureRegion normalRegion){
+		this.normalRegion = normalRegion;
+	}
+	
+	public void setEmptyRegion(TextureRegion emptyRegion){
+		this.emptyRegion = emptyRegion;
+	}
+	
+	public boolean isInDelay(){
+		return (delayCurrent < delay);
+	}
+	
+	public void setThrowed(boolean throwed){
+		this.throwed = throwed;
+	}
+	
+	public boolean isThrowed(){
+		return throwed;
+	}
+	
+	public void setFacing(Facing facing){
+		this.facing = facing;
+		if(facing == Facing.LEFT){
+			velocity.set(-Math.abs(velocity.x), velocity.y);
+		}else{
+			velocity.set(Math.abs(velocity.x), velocity.y);
+		}
+	}
 	
 	
 	
