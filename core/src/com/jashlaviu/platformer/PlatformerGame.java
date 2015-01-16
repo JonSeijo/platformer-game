@@ -8,11 +8,13 @@ import com.jashlaviu.platformer.screens.TestScreen;
 public class PlatformerGame extends Game {
 	private SpriteBatch batch;
 	private ShapeRenderer shaper;
+	private TextureLoader textureLoader;
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		shaper = new ShapeRenderer();	
+		shaper = new ShapeRenderer();
+		textureLoader = new TextureLoader();
 		
 		this.setScreen(new TestScreen(this));
 	}
@@ -27,6 +29,7 @@ public class PlatformerGame extends Game {
 		super.dispose();
 		batch.dispose();
 		shaper.dispose();
+		textureLoader.dispose();
 	}
 	
 	public SpriteBatch getBatch(){

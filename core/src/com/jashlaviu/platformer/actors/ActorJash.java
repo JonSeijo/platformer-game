@@ -1,8 +1,6 @@
 package com.jashlaviu.platformer.actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -10,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.jashlaviu.platformer.TextureLoader;
 
 public class ActorJash extends Actor{
 	
@@ -27,7 +26,7 @@ public class ActorJash extends Actor{
 
 	
 	public ActorJash(float posX, float posY){
-		setRegion(new TextureRegion(new Texture(Gdx.files.internal("notexture.png"))));
+		setRegion(TextureLoader.noRegion);
 				
 		collisionBounds = new Rectangle();
 		setCollisionBounds(new Rectangle(getX(), getY(), getWidth(), getHeight()));

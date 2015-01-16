@@ -1,11 +1,10 @@
 package com.jashlaviu.platformer.actors;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.jashlaviu.platformer.TextureLoader;
 
 public class Player extends ActorJash {
 	
@@ -29,129 +28,17 @@ public class Player extends ActorJash {
 		this.checkpoint = checkpoint; 
 		
 		MAX_VEL_X = 150f;	
-		FRICTION = 15f;
-		
+		FRICTION = 15f;		
 		MOVESPEED = 1500f;
+		state = State.JUMPING;	
 		
-		walkAnimation = new Animation(100f, getRegion());
-		jumpAnimation = new Animation(100f, getRegion());
-		fallAnimation = new Animation(100f, getRegion());
-		
-		shootNormalAnimation = new Animation(100f, getRegion());
-		shootWalkAnimation = new Animation(100f, getRegion());
-		shootJumpAnimation = new Animation(100f, getRegion());
-		shootFallAnimation = new Animation(100f, getRegion());
-		
-		state = State.JUMPING;
-		
-		//Load textures		
-		Texture walkSheet = new Texture(Gdx.files.internal("player2-2_walking.png"));
-		TextureRegion walk0 = new TextureRegion(walkSheet, 0, 0, 32, 32);
-		TextureRegion walk1 = new TextureRegion(walkSheet, 32, 0, 32, 32);
-		TextureRegion walk2 = new TextureRegion(walkSheet, 64, 0, 32, 32);
-		TextureRegion walk3 = new TextureRegion(walkSheet, 96, 0, 32, 32);
-		TextureRegion walk4 = new TextureRegion(walkSheet, 128, 0, 32, 32);
-		TextureRegion walk5 = new TextureRegion(walkSheet, 160, 0, 32, 32);
-		TextureRegion walk6 = new TextureRegion(walkSheet, 192, 0, 32, 32);
-		TextureRegion walk7 = new TextureRegion(walkSheet, 224, 0, 32, 32);
-		TextureRegion walk8 = new TextureRegion(walkSheet, 256, 0, 32, 32);
-		
-		TextureRegion fall1 = new TextureRegion(walkSheet, 32, 32, 32, 32);
-		
-		TextureRegion jump1 = new TextureRegion(walkSheet, 64, 32, 32, 32);
-		TextureRegion jump2 = new TextureRegion(walkSheet, 96, 32, 32, 32);
-		TextureRegion jump3 = new TextureRegion(walkSheet, 128, 32, 32, 32);
-		
-		TextureRegion shootNormal1 = new TextureRegion(walkSheet, 0, 128, 32, 32);		
-		TextureRegion shootNormal2 = new TextureRegion(walkSheet, 32, 128, 32, 32);
-		TextureRegion shootNormal3 = new TextureRegion(walkSheet, 64, 128, 32, 32);
-		TextureRegion shootNormal4 = new TextureRegion(walkSheet, 96, 128, 32, 32);
-		TextureRegion shootNormal5 = new TextureRegion(walkSheet, 128, 128, 32, 32);
-		
-		TextureRegion shootFall1 = new TextureRegion(walkSheet, 0, 160, 32, 32);		
-		TextureRegion shootFall2 = new TextureRegion(walkSheet, 32, 160, 32, 32);
-		TextureRegion shootFall3 = new TextureRegion(walkSheet, 64, 160, 32, 32);
-		TextureRegion shootFall4 = new TextureRegion(walkSheet, 96, 160, 32, 32);
-		TextureRegion shootFall5 = new TextureRegion(walkSheet, 128, 160, 32, 32);
-		
-		TextureRegion shootJump1 = new TextureRegion(walkSheet, 0, 192, 32, 32);		
-		TextureRegion shootJump2 = new TextureRegion(walkSheet, 32, 192, 32, 32);
-		TextureRegion shootJump3 = new TextureRegion(walkSheet, 64, 192, 32, 32);
-		TextureRegion shootJump4 = new TextureRegion(walkSheet, 96, 192, 32, 32);
-		TextureRegion shootJump5 = new TextureRegion(walkSheet, 128, 192, 32, 32);
-		
-		TextureRegion shootWalk1 = new TextureRegion(walkSheet, 0, 224, 32, 32);		
-		TextureRegion shootWalk2 = new TextureRegion(walkSheet, 32, 224, 32, 32);
-		TextureRegion shootWalk3 = new TextureRegion(walkSheet, 64, 224, 32, 32);
-		TextureRegion shootWalk4 = new TextureRegion(walkSheet, 96, 224, 32, 32);
-		TextureRegion shootWalk5 = new TextureRegion(walkSheet, 128, 224, 32, 32);
-		
-		
-		Array<TextureRegion> walkRegions = new Array<TextureRegion>();
-		walkRegions.add(walk1);
-		walkRegions.add(walk2);		
-		walkRegions.add(walk3);		
-		walkRegions.add(walk4);	
-		walkRegions.add(walk5);
-		walkRegions.add(walk6);
-		walkRegions.add(walk7);
-		walkRegions.add(walk8);		
-		
-		Array<TextureRegion> jumpRegions = new Array<TextureRegion>();
-		jumpRegions.add(jump1);
-		jumpRegions.add(jump2);
-		jumpRegions.add(jump3);
-		
-		Array<TextureRegion> fallRegions = new Array<TextureRegion>();
-		fallRegions.add(fall1);		
-		
-		Array<TextureRegion> shootNormalRegions = new Array<TextureRegion>();
-		shootNormalRegions.add(shootNormal1);
-		shootNormalRegions.add(shootNormal2);
-		shootNormalRegions.add(shootNormal3);
-		shootNormalRegions.add(shootNormal4);
-		shootNormalRegions.add(shootNormal5);
-		
-		Array<TextureRegion> shootFallRegions = new Array<TextureRegion>();
-		shootFallRegions.add(shootFall1);
-		shootFallRegions.add(shootFall2);
-		shootFallRegions.add(shootFall3);
-		shootFallRegions.add(shootFall4);
-		shootFallRegions.add(shootFall5);		
-		
-		Array<TextureRegion> shootJumpRegions = new Array<TextureRegion>();
-		shootJumpRegions.add(shootJump1);
-		shootJumpRegions.add(shootJump2);
-		shootJumpRegions.add(shootJump3);
-		shootJumpRegions.add(shootJump4);
-		shootJumpRegions.add(shootJump5);	
-		
-		Array<TextureRegion> shootWalkRegions = new Array<TextureRegion>();
-		shootWalkRegions.add(shootWalk1);
-		shootWalkRegions.add(shootWalk2);
-		shootWalkRegions.add(shootWalk3);
-		shootWalkRegions.add(shootWalk4);
-		shootWalkRegions.add(shootWalk5);
-		
-		
-		
-		setNormalRegion(walk0);		
-		
-		setWalkAnimation(0.08f, walkRegions);		
-		setJumpAnimation(.10f, jumpRegions);
-		setFallAnimation(.1f, fallRegions);
-		
-		setShootNormalAnimation(0.08f, shootNormalRegions);
-		
-		setShootFalllAnimation(0.08f, shootFallRegions);
-		setShootJumpAnimation(0.08f, shootJumpRegions);
-		
-		setShootWalkAnimation(0.08f, shootWalkRegions);
+		initializeAnimations();		
+		setNormalRegion(TextureLoader.playerNormal);				
 		
 		bounds = new Rectangle(getX()+12, getY()+1, 8, 27);
-		setCollisionBounds(bounds);		
-			
+		setCollisionBounds(bounds);					
 	}
+
 	
 	public void updateX(float delta){		
 		if(movingLeft) velocity.x -= MOVESPEED * delta;	
@@ -262,6 +149,26 @@ public class Player extends ActorJash {
 	
 	public void setState(State state){
 		this.state = state;			
+	}
+	
+	private void initializeAnimations(){
+		walkAnimation = new Animation(100f, getRegion());
+		jumpAnimation = new Animation(100f, getRegion());
+		fallAnimation = new Animation(100f, getRegion());		
+		
+		shootNormalAnimation = new Animation(100f, getRegion());
+		shootWalkAnimation = new Animation(100f, getRegion());
+		shootJumpAnimation = new Animation(100f, getRegion());
+		shootFallAnimation = new Animation(100f, getRegion());		
+		
+		setWalkAnimation(0.08f, TextureLoader.playerWalk);		
+		setJumpAnimation(.10f, TextureLoader.playerJump);
+		setFallAnimation(.1f, TextureLoader.playerFall);
+		
+		setShootNormalAnimation(0.08f, TextureLoader.playerShootNormal);		
+		setShootFalllAnimation(0.08f, TextureLoader.playerShootFall);
+		setShootJumpAnimation(0.08f, TextureLoader.playerShootJump);		
+		setShootWalkAnimation(0.08f, TextureLoader.playerShootWalk);
 	}
 	
 	public void setWalkAnimation(float duration, Array<TextureRegion> regions){
