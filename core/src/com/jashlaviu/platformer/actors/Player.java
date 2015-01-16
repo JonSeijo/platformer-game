@@ -80,6 +80,12 @@ public class Player extends ActorJash {
 		TextureRegion shootJump4 = new TextureRegion(walkSheet, 96, 192, 32, 32);
 		TextureRegion shootJump5 = new TextureRegion(walkSheet, 128, 192, 32, 32);
 		
+		TextureRegion shootWalk1 = new TextureRegion(walkSheet, 0, 224, 32, 32);		
+		TextureRegion shootWalk2 = new TextureRegion(walkSheet, 32, 224, 32, 32);
+		TextureRegion shootWalk3 = new TextureRegion(walkSheet, 64, 224, 32, 32);
+		TextureRegion shootWalk4 = new TextureRegion(walkSheet, 96, 224, 32, 32);
+		TextureRegion shootWalk5 = new TextureRegion(walkSheet, 128, 224, 32, 32);
+		
 		
 		Array<TextureRegion> walkRegions = new Array<TextureRegion>();
 		walkRegions.add(walk1);
@@ -120,6 +126,14 @@ public class Player extends ActorJash {
 		shootJumpRegions.add(shootJump4);
 		shootJumpRegions.add(shootJump5);	
 		
+		Array<TextureRegion> shootWalkRegions = new Array<TextureRegion>();
+		shootWalkRegions.add(shootWalk1);
+		shootWalkRegions.add(shootWalk2);
+		shootWalkRegions.add(shootWalk3);
+		shootWalkRegions.add(shootWalk4);
+		shootWalkRegions.add(shootWalk5);
+		
+		
 		
 		setNormalRegion(walk0);		
 		
@@ -128,9 +142,11 @@ public class Player extends ActorJash {
 		setFallAnimation(.1f, fallRegions);
 		
 		setShootNormalAnimation(0.08f, shootNormalRegions);
-		setShootWalkAnimation(0.08f, shootNormalRegions);
+		
 		setShootFalllAnimation(0.08f, shootFallRegions);
 		setShootJumpAnimation(0.08f, shootJumpRegions);
+		
+		setShootWalkAnimation(0.08f, shootWalkRegions);
 		
 		bounds = new Rectangle(getX()+12, getY()+1, 8, 27);
 		setCollisionBounds(bounds);		
