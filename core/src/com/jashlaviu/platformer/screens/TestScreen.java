@@ -50,7 +50,7 @@ public class TestScreen extends ScreenJash{
 		mapRenderer.render();			
 		stage.draw();		
 		
-	//	drawDebug();
+		//drawDebug();
 	}
 	
 	private void drawDebug(){

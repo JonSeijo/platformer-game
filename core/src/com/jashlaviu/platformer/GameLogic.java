@@ -16,13 +16,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.jashlaviu.platformer.actors.ActorJash;
 import com.jashlaviu.platformer.actors.Checkpoint;
-import com.jashlaviu.platformer.actors.EnemyCrab;
 import com.jashlaviu.platformer.actors.ShootCoco;
-import com.jashlaviu.platformer.actors.Enemy;
-import com.jashlaviu.platformer.actors.EnemySnail;
 import com.jashlaviu.platformer.actors.Player;
 import com.jashlaviu.platformer.actors.ActorJash.Facing;
 import com.jashlaviu.platformer.actors.Player.State;
+import com.jashlaviu.platformer.actors.enemy.Enemy;
+import com.jashlaviu.platformer.actors.enemy.EnemyCrab;
+import com.jashlaviu.platformer.actors.enemy.EnemySnail;
 import com.jashlaviu.platformer.actors.Shoot;
 import com.jashlaviu.platformer.screens.TestScreen;
 
@@ -71,15 +71,22 @@ public class GameLogic {
 	}
 	
 	private void enemiesLogic(float delta){
-		Iterator<Enemy> iter = enemies.iterator();
-		while(iter.hasNext()){
-			Enemy enemy = (Enemy)iter.next();
+		Iterator<Enemy> eIter = enemies.iterator();
+		while(eIter.hasNext()){
+			Enemy enemy = (Enemy)eIter.next();
 			
-			//Snails don't move, so look to the player position
-			if(enemy.getType() == Enemy.Type.snail){
-				enemy.setFacing( (player.getX() > enemy.getX()) ? 
-						ActorJash.Facing.RIGHT : ActorJash.Facing.LEFT);			
-			}				
+			if(enemy.isDying()){
+				if(enemy.isDead()){
+					enemy.remove();
+					eIter.remove();
+				}				
+			} //Snails don't move, so look to the player position
+			else if(enemy.getType() == Enemy.Type.snail){
+					enemy.setFacing( (player.getX() > enemy.getX()) ? 
+							ActorJash.Facing.RIGHT : ActorJash.Facing.LEFT);			
+				}
+			
+			
 			
 			Rectangle eBounds = enemy.getCollisionBounds();			
 			
@@ -150,11 +157,10 @@ public class GameLogic {
 				
 				if(sBounds.overlaps(enemy.getCollisionBounds())){
 					if(!shoot.isDestroying()){	
-						//shoot.update(delta);
+						
 						shoot.destroy();
 						
-						enemy.remove();
-						enemyIter.remove();
+						enemy.setDying(true);
 					}
 				}				
 				
@@ -177,7 +183,10 @@ public class GameLogic {
 		
 		for(Enemy enemy : enemies){
 			if(pBounds.overlaps(enemy.getCollisionBounds())){
-				player.die();
+				//If the enemy isn't dying
+				if(!enemy.isDying()){
+					player.die();
+				}
 			}
 		}
 		

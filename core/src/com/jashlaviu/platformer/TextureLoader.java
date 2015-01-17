@@ -15,6 +15,7 @@ public class TextureLoader {
 	public static Array<TextureRegion> playerWalk, playerJump, playerFall;
 	public static Array<TextureRegion> playerShootNormal, playerShootFall, playerShootJump, playerShootWalk;
 	public static Array<TextureRegion> shootCocoDestroy;
+	public static Array<TextureRegion> crabWalk, crabDie, snailDie;
 	
 	public TextureLoader(){	
 		
@@ -37,14 +38,17 @@ public class TextureLoader {
 		playerShootJump = getRegions(playerTexture, 0, 6, 32, 32, 5);
 		playerShootWalk = getRegions(playerTexture, 0, 7, 32, 32, 5);
 		
-		snailNormal = getRegion(snailTexture, 0, 0, 32, 32);
-		crabNormal = getRegion(crabTexture, 0, 5, 32, 16);  
-		
 		shootCocoNormal = getRegion(shootTexture, 0, 0, 8, 8);
 		shootCocoEmpty = getRegion(shootTexture, 1, 0, 8, 8);
-		shootCocoDestroy = getRegions(shootTexture, 0, 1, 8, 8, 6);
+		shootCocoDestroy = getRegions(shootTexture, 0, 1, 8, 8, 6);	
 		
-		 									
+		crabNormal = getRegion(crabTexture, 0, 7, 32, 16);  
+		crabWalk = getRegions(crabTexture, 0, 7, 32, 16, 4);
+		crabDie = getRegions(crabTexture, 0, 8, 32, 16, 1);
+		
+		snailNormal = getRegion(snailTexture, 0, 0, 40, 32);
+		snailDie = getRegions(snailTexture, 0, 1, 40, 32, 1);
+		
 		
 	}
 	
