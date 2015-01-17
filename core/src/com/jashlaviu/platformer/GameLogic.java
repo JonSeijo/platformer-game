@@ -23,6 +23,8 @@ import com.jashlaviu.platformer.actors.Player.State;
 import com.jashlaviu.platformer.actors.enemy.Enemy;
 import com.jashlaviu.platformer.actors.enemy.EnemyCrab;
 import com.jashlaviu.platformer.actors.enemy.EnemySnail;
+import com.jashlaviu.platformer.actors.food.Food;
+import com.jashlaviu.platformer.actors.food.FoodChicken;
 import com.jashlaviu.platformer.actors.Shoot;
 import com.jashlaviu.platformer.screens.TestScreen;
 
@@ -33,6 +35,7 @@ public class GameLogic {
 	
 	private Stage stage;		
 	private Player player;	
+	private Array<Food> food;
 	private Array<Shoot> shoots;
 	private Array<Enemy> enemies;
 	private Array<Checkpoint> checkpoints;
@@ -46,6 +49,7 @@ public class GameLogic {
 		checkpoints = new Array<Checkpoint>();
 		enemies = new Array<Enemy>();
 		shoots = new Array<Shoot>();
+		food = new Array<Food>();
 		
 		checkpoints.add(new Checkpoint(100, 200));
 		stage = gameScreen.getStage();
@@ -62,12 +66,31 @@ public class GameLogic {
 		
 		playerLogic(delta);  //Update, map collision, enemy collision		
 		enemiesLogic(delta); //Update, map collision		
-		shootsLogic(delta);	 //Update, map collision and enemy collision		
+		shootsLogic(delta);	 //Update, map collision and enemy collision	
+		foodLogic(delta);
 		
 		//System.out.println("vel x: " + player.getVelocity().x);
 		gameScreen.getCamera().position.x = MathUtils.round(10f * (player.getX()+20)) / 10f;
 		gameScreen.getCamera().position.y = MathUtils.round(10f * (player.getY()+20)) / 10f;
 		
+	}
+	
+	private void foodLogic(float delta){
+		Iterator<Food> foodIter = food.iterator();
+		while(foodIter.hasNext()){
+			Food foodSingle = (Food)foodIter.next();			
+			Rectangle foodBounds = foodSingle.getCollisionBounds();
+			
+			foodSingle.update(delta);			
+
+			for(Rectangle mapBounds : mapCollisionBounds){
+				if(foodBounds.overlaps(mapBounds)){
+					foodSingle.setY(mapBounds.y + mapBounds.height - foodSingle.getBoundsDistanceY());
+					foodSingle.getVelocity().y = 0;
+				}
+			}			
+			
+		}
 	}
 	
 	private void enemiesLogic(float delta){
@@ -84,9 +107,7 @@ public class GameLogic {
 			else if(enemy.getType() == Enemy.Type.snail){
 					enemy.setFacing( (player.getX() > enemy.getX()) ? 
 							ActorJash.Facing.RIGHT : ActorJash.Facing.LEFT);			
-				}
-			
-			
+			}			
 			
 			Rectangle eBounds = enemy.getCollisionBounds();			
 			
@@ -180,6 +201,7 @@ public class GameLogic {
 		player.updateY(delta);			
 		handleYmapCollision(player, pBounds);
 		
+		player.updateHunger(delta);
 		
 		for(Enemy enemy : enemies){
 			if(pBounds.overlaps(enemy.getCollisionBounds())){
@@ -289,8 +311,23 @@ public class GameLogic {
 		
 		loadMapBounds(map.getLayers().get("CollisionLayer1"));
 		loadEnemies(map.getLayers().get("EnemyLayer1"));
+		loadFood(map.getLayers().get("FoodLayer"));
 		
 		
+	}
+	
+	private void loadFood(MapLayer foodLayer){
+		MapObjects mapObjects = foodLayer.getObjects();
+		
+		for(RectangleMapObject object : 
+			mapObjects.getByType(RectangleMapObject.class)){
+			
+			if(object.getName().equals(FoodChicken.name)){
+				FoodChicken foodChicken = new FoodChicken(object.getRectangle().x, object.getRectangle().y);
+				stage.addActor(foodChicken);
+				food.add(foodChicken);	
+			}
+		}
 	}
 	
 	private void loadEnemies(MapLayer enemyLayer){
@@ -303,8 +340,7 @@ public class GameLogic {
 				EnemySnail enemySnail = new EnemySnail(object.getRectangle().x, object.getRectangle().y);
 				stage.addActor(enemySnail);
 				enemies.add(enemySnail);			
-			}else if(object.getName().equals(EnemyCrab.name)){
-				
+			}else if(object.getName().equals(EnemyCrab.name)){				
 				EnemyCrab enemyCrab = new EnemyCrab(object.getRectangle().x, object.getRectangle().y);
 				stage.addActor(enemyCrab);
 				enemies.add(enemyCrab);	

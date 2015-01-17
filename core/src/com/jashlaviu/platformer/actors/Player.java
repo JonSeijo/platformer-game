@@ -14,14 +14,16 @@ public class Player extends ActorJash {
 	public enum State{
 		WALKING, JUMPING, LANDING
 	}
+	
 	protected State state;	
 	protected Animation walkAnimation, jumpAnimation, fallAnimation;
 	protected Animation shootNormalAnimation, shootWalkAnimation, shootJumpAnimation, shootFallAnimation;
 	
 	protected float FRICTION, MOVESPEED, MAX_VEL_X, MAX_VEL_Y;
 	protected boolean movingLeft, movingRight;	
-	
 	protected boolean isShooting;
+	
+	private float hunger;
 
 	public Player(Checkpoint checkpoint) {
 		super(checkpoint.getX(), checkpoint.getY());
@@ -36,9 +38,17 @@ public class Player extends ActorJash {
 		setNormalRegion(TextureLoader.playerNormal);				
 		
 		bounds = new Rectangle(getX()+12, getY()+1, 8, 27);
-		setCollisionBounds(bounds);					
+		setCollisionBounds(bounds);	
 	}
-
+	
+	public void updateHunger(float delta){
+		hunger += delta;
+		System.out.println(hunger);
+		
+		if(hunger >= 100){
+			System.out.println("MUERTE POR HAMBRE");
+		}
+	}
 	
 	public void updateX(float delta){		
 		if(movingLeft) velocity.x -= MOVESPEED * delta;	

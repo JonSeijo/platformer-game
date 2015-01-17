@@ -7,15 +7,15 @@ import com.badlogic.gdx.utils.Array;
 
 public class TextureLoader {
 	
-	private Texture noTexture, playerTexture, shootTexture, crabTexture, snailTexture;
+	private Texture noTexture, playerTexture, shootTexture, crabTexture, snailTexture, foodTexture;
 	
 	public static TextureRegion noRegion, playerNormal, snailNormal, crabNormal;
 	public static TextureRegion shootCocoNormal, shootCocoEmpty;
 	
 	public static Array<TextureRegion> playerWalk, playerJump, playerFall;
 	public static Array<TextureRegion> playerShootNormal, playerShootFall, playerShootJump, playerShootWalk;
-	public static Array<TextureRegion> shootCocoDestroy;
-	public static Array<TextureRegion> crabWalk, crabDie, snailDie;
+	public static Array<TextureRegion> shootCocoDestroy, crabWalk, crabDie, snailDie;
+	public static Array<TextureRegion> foodChicken;
 	
 	public TextureLoader(){	
 		
@@ -24,6 +24,7 @@ public class TextureLoader {
 		snailTexture = new Texture(Gdx.files.internal("snail-1.png"));
 		crabTexture =  new Texture(Gdx.files.internal("crab-1.png"));
 		shootTexture = new Texture(Gdx.files.internal("shoot1.png"));
+		foodTexture = new Texture(Gdx.files.internal("food.png"));
 		
 		noRegion = getRegion(noTexture, 0, 0, noTexture.getWidth(), noTexture.getHeight());		
 		playerNormal = getRegion(playerTexture, 0, 0, 32, 32);	
@@ -49,7 +50,7 @@ public class TextureLoader {
 		snailNormal = getRegion(snailTexture, 0, 0, 40, 32);
 		snailDie = getRegions(snailTexture, 0, 1, 40, 32, 1);
 		
-		
+		foodChicken = getRegions(foodTexture, 0, 0, 16, 16, 2);						
 	}
 	
 	private TextureRegion getRegion(Texture texture, int x, int y, int width, int height){

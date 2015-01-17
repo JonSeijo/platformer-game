@@ -36,4 +36,9 @@
   <object name="crab" x="614" y="187"/>
   <object name="crab" x="351" y="306"/>
  </objectgroup>
+ <objectgroup name="FoodLayer" width="80" height="30">
+  <object name="chicken" x="360" y="116"/>
+  <object name="chicken" x="449" y="350"/>
+  <object name="chicken" x="86" y="81"/>
+ </objectgroup>
 </map>
