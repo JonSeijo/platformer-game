@@ -49,9 +49,9 @@ public class GameLogic {
 		checkpoints = new Array<Checkpoint>();
 		enemies = new Array<Enemy>();
 		shoots = new Array<Shoot>();
-		food = new Array<Food>();
-		
+		food = new Array<Food>();		
 		checkpoints.add(new Checkpoint(100, 200));
+		
 		stage = gameScreen.getStage();
 		
 		level = 1;		
@@ -71,8 +71,7 @@ public class GameLogic {
 		
 		//System.out.println("vel x: " + player.getVelocity().x);
 		gameScreen.getCamera().position.x = MathUtils.round(10f * (player.getX()+20)) / 10f;
-		gameScreen.getCamera().position.y = MathUtils.round(10f * (player.getY()+20)) / 10f;
-		
+		gameScreen.getCamera().position.y = MathUtils.round(10f * (player.getY()+20)) / 10f;		
 	}
 	
 	private void foodLogic(float delta){
@@ -191,6 +190,8 @@ public class GameLogic {
 	}	
 
 	private void playerLogic(float delta) {
+		boolean needRestart = false;
+		
 		Rectangle pBounds = player.getCollisionBounds();
 		
 		//Updates every actor X position
@@ -208,9 +209,14 @@ public class GameLogic {
 				//If the enemy isn't dying
 				if(!enemy.isDying()){
 					player.die();
+					needRestart = true;										
 				}
 			}
 		}	
+		
+		if(needRestart){
+			restartLevel();
+		}
 		
 		
 		Iterator<Food> foodIter = food.iterator();
@@ -313,8 +319,21 @@ public class GameLogic {
 		
 	}
 	
-	public void loadLevel(int level){
+	public void loadLevel(int level){	
+		for(Food foodS : food) 
+			foodS.remove();
+		food.clear();
+		
+		for(Enemy enemy : enemies) 
+			enemy.remove();		
+		enemies.clear();
+		
+		for(Shoot shoot : shoots)
+			shoot.remove();		
+		shoots.clear();
+		
 		mapCollisionBounds.clear();
+		
 		TmxMapLoader mapLoader = new TmxMapLoader();
 		TmxMapLoader.Parameters param = new TmxMapLoader.Parameters();
 		
@@ -325,9 +344,7 @@ public class GameLogic {
 		
 		loadMapBounds(map.getLayers().get("CollisionLayer1"));
 		loadEnemies(map.getLayers().get("EnemyLayer1"));
-		loadFood(map.getLayers().get("FoodLayer"));
-		
-		
+		loadFood(map.getLayers().get("FoodLayer"));		
 	}
 	
 	private void loadFood(MapLayer foodLayer){
@@ -373,6 +390,10 @@ public class GameLogic {
 			Rectangle rec = object.getRectangle();
 			mapCollisionBounds.add(new Rectangle(rec));			
 		}
+	}
+	
+	private void restartLevel(){
+		loadLevel(level);
 	}
 	
 	public void dispose(){

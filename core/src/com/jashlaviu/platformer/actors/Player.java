@@ -232,6 +232,7 @@ public class Player extends ActorJash {
 	 * Resets player position to the stored checkpoint
 	 */
 	public void respawn(){
+		hunger = 0;
 		setPosition(checkpoint.getX(), checkpoint.getY());
 	}
 	
