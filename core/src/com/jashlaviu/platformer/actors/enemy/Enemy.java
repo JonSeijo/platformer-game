@@ -3,6 +3,7 @@ package com.jashlaviu.platformer.actors.enemy;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.jashlaviu.platformer.actors.ActorJash;
 
 public class Enemy extends ActorJash{
@@ -66,7 +67,7 @@ public class Enemy extends ActorJash{
 		if(dying){
 			velocity.set(0, 0);
 			animationTime = 0;		
-			this.addAction(Actions.fadeOut(dyingTime));
+			this.addAction(new ParallelAction(Actions.moveTo(getX(), getY() + 40, dyingTime), Actions.fadeOut(dyingTime)));
 		}
 	}
 	

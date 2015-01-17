@@ -210,8 +210,22 @@ public class GameLogic {
 					player.die();
 				}
 			}
-		}
+		}	
 		
+		
+		Iterator<Food> foodIter = food.iterator();
+		while(foodIter.hasNext()){
+			Food foodSingle = (Food)foodIter.next();	
+			
+			if(pBounds.overlaps(foodSingle.getCollisionBounds())){
+				player.eat(foodSingle.getHungerSatisfaction());
+				foodSingle.remove();
+				foodIter.remove();
+			}
+			
+		}
+			
+	
 		player.updateRegion(delta);
 	}
 
@@ -371,6 +385,10 @@ public class GameLogic {
 	
 	public Array<Rectangle> getMapCollisionBounds(){
 		return mapCollisionBounds;
+	}
+	
+	public Player getPlayer(){
+		return player;
 	}
 	
 

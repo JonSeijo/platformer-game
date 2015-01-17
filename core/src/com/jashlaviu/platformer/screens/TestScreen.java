@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jashlaviu.platformer.GameLogic;
+import com.jashlaviu.platformer.Gui;
 import com.jashlaviu.platformer.PlatformerGame;
 import com.jashlaviu.platformer.actors.ActorJash;
 
@@ -17,9 +18,13 @@ public class TestScreen extends ScreenJash{
 	private GameLogic gameLogic;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	
+	private Gui gui;
+	
 	public TestScreen(PlatformerGame game) {
 		super(game);		
 		gameLogic = new GameLogic(this);
+		gui = new Gui(gameLogic, game);
+		
 		batch.setProjectionMatrix(camera.combined);
 		
 		mapRenderer = new OrthogonalTiledMapRenderer(gameLogic.getMap(), batch);
@@ -48,7 +53,9 @@ public class TestScreen extends ScreenJash{
 		//Draw map and actors
 		batch.setProjectionMatrix(camera.combined);
 		mapRenderer.render();			
-		stage.draw();		
+		stage.draw();
+		
+		gui.draw();
 		
 		//drawDebug();
 	}

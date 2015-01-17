@@ -43,10 +43,10 @@ public class Player extends ActorJash {
 	
 	public void updateHunger(float delta){
 		hunger += delta;
-		System.out.println(hunger);
 		
 		if(hunger >= 100){
-			System.out.println("MUERTE POR HAMBRE");
+			hunger = 100;
+			System.out.println("DIE FOR HUNGER");
 		}
 	}
 	
@@ -125,8 +125,15 @@ public class Player extends ActorJash {
 				}
 			}
 		}
+	}
+	
+	public void eat(float hungerSatisfaction){
+		//Sonido de comer maybe?
+		hunger -= hungerSatisfaction;
 		
-
+		if(hunger < 0)
+			hunger = 0;
+		
 	}
 	
 	public void moveRight(){
@@ -239,6 +246,10 @@ public class Player extends ActorJash {
 	
 	public boolean isShooting(){
 		return isShooting;
+	}
+	
+	public float getHunger(){
+		return hunger;
 	}
 
 }

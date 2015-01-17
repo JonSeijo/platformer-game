@@ -35,6 +35,10 @@ public class Food extends ActorJash{
 		idleAnimation = new Animation(framDuration, regions);
 	}
 	
+	public float getHungerSatisfaction(){
+		return hungerSatisfaction;
+	}
+	
 	
 
 }
