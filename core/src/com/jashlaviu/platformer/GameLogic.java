@@ -114,8 +114,8 @@ public class GameLogic {
 						ActorJash.Facing.RIGHT : ActorJash.Facing.LEFT);
 				
 				//reemplazar con enemy.isOnRange(player)
-				if(player.getX() > enemy.getX() -100 && player.getX() < enemy.getX() + 100
-						&& player.getY() > enemy.getY() -100 && player.getY() < enemy.getY() + 100){					
+				if(player.getX() > enemy.getX() -200 && player.getX() < enemy.getX() + 200
+						&& player.getY() > enemy.getY() -200 && player.getY() < enemy.getY() + 200){					
 					enemy.shot();					
 				}
 			}			
@@ -123,8 +123,13 @@ public class GameLogic {
 			if(enemy.needShoot()){
 				enemy.setNeedShoot(false);						
 				if(enemy.getType() == Enemy.Type.snake){
-					ShootVenom shoot = new ShootVenom(enemy.getX() + 10, enemy.getY()+20, enemy);	
-					if(enemy.getFacing() == Enemy.Facing.LEFT) shoot.setVelocity(-shoot.getVelocity().x, shoot.getVelocity().y);
+					ShootVenom shoot;
+					if(enemy.getFacing() == Enemy.Facing.LEFT){
+						shoot = new ShootVenom(enemy.getX(), enemy.getY()+16, enemy);	
+						shoot.setVelocity(-shoot.getVelocity().x, shoot.getVelocity().y);
+					}else{
+						shoot = new ShootVenom(enemy.getX()+15, enemy.getY()+16, enemy);	
+					}					 
 					shoots.add(shoot);
 					stage.addActor(shoot);
 				}
@@ -160,29 +165,13 @@ public class GameLogic {
 		}
 	}
 	
-	private void shootsLogic(float delta){		
+	private void shootsLogic(float delta){	
+		
+		boolean needRestart = false;
+		
 		Iterator<Shoot> shootIter = shoots.iterator();
 		while(shootIter.hasNext()){
-			Shoot shoot = (Shoot)shootIter.next();
-			
-			/*
-			if(!shoot.isThrowed()){
-				if(shoot.getActorOrigin() == player){
-					if(shoot.isInDelay()){						
-						if(player.getFacing() == Facing.RIGHT){
-							shoot.setPosition(player.getX() + 16, player.getY() + 12);	
-							shoot.setFacing(Shoot.Facing.RIGHT);						
-						}else{
-							shoot.setPosition(player.getX() + 10, player.getY() + 12);
-							shoot.setFacing(Shoot.Facing.LEFT);
-						}					
-					}else{  //If not throwed and not on delay
-						shoot.setThrowed(true);	
-						shoot.addVelocity(player.getVelocity().x, 0);
-					}
-				}
-			}		
-			*/
+			Shoot shoot = (Shoot)shootIter.next();	
 			shoot.update(delta);
 			Rectangle sBounds = shoot.getCollisionBounds();
 			
@@ -205,16 +194,27 @@ public class GameLogic {
 					Enemy enemy = (Enemy)enemyIter.next();
 					
 					if(sBounds.overlaps(enemy.getCollisionBounds())){
-						if(!shoot.isDestroying()){	
-							
-							shoot.destroy();
-							
+						if(!shoot.isDestroying()){								
+							shoot.destroy();							
 							enemy.setDying(true);
 						}
 					}						
 				}
 			}
+			
+			if(shoot.getActorOrigin() != player){
+				if(sBounds.overlaps(player.getCollisionBounds())){
+					player.die();				
+					needRestart = true;
+				}
+			}			
+			
 		}
+		
+		if(needRestart){
+			restartLevel();
+		}
+		
 	}	
 
 	private void playerLogic(float delta) {
@@ -350,22 +350,7 @@ public class GameLogic {
 	}
 	
 	private void shoot(){	
-		player.shoot();
-		
-	/*	if(!player.isShooting()){
-			ShootCoco shoot;		
-			if(player.getFacing() == Facing.RIGHT){
-				shoot = new ShootCoco(player.getX() + 16, player.getY() + 12, player);
-			}else{
-				shoot = new ShootCoco(player.getX() + 10, player.getY() + 12, player);
-			}
-			
-			player.setShooting(true);
-			
-			shoots.add(shoot);
-			stage.addActor(shoot);
-		}
-		*/
+		player.shoot();	
 	}
 	
 	public void loadLevel(int level){	

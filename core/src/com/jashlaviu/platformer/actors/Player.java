@@ -87,7 +87,8 @@ public class Player extends ActorJash {
 	}
 	
 	public void updateState(float delta){			
-		animationTime += delta;		
+		animationTime += delta;	
+		shootTimer += delta;
 
 		if(!isShooting()){
 			if(state == State.WALKING){					
@@ -97,23 +98,20 @@ public class Player extends ActorJash {
 				}
 				else{ //Is moving
 					setRegion(walkAnimation.getKeyFrame(animationTime, true));
-					//animationTime += delta;
 				}			
 			}
 			else if(state == State.JUMPING){
 				if(velocity.y == 0){				
 					setRegion(normalRegion);				
 				}else if(velocity.y > 0){ //NOT shooting and is jumping
-			//		animationTime += delta;
 					setRegion(jumpAnimation.getKeyFrame(animationTime, true));
 					
 				}else{  //NOT shooting and is falling
 					setRegion(fallAnimation.getKeyFrame(0, false));			
 				}
 			}
-		}
-		
-		shootTimer += delta;
+		}		
+
 		
 		if(isShooting()){			
 			if(state == State.WALKING){					
@@ -133,28 +131,12 @@ public class Player extends ActorJash {
 					setRegion(shootFallAnimation.getKeyFrame(shootTimer, true));					
 				}
 			}
-			/*
+			
 			if(shootTimer > shootDelayAnimation){
 				setNeedShoot(true);
 				setShooting(false);
-			}*/
-			
-			if(shootNormalAnimation.isAnimationFinished(animationTime)){
-				setShooting(false);
-				setNeedShoot(true);
 			}
-			if(shootWalkAnimation.isAnimationFinished(animationTime)){
-				setShooting(false);
-				setNeedShoot(true);
-			}
-			if(shootJumpAnimation.isAnimationFinished(animationTime)){
-				setShooting(false);
-				setNeedShoot(true);
-			}
-			if(shootFallAnimation.isAnimationFinished(animationTime)){
-				setShooting(false);
-				setNeedShoot(true);
-			}
+
 		}
 	}
 	

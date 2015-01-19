@@ -13,10 +13,9 @@ public class ShootVenom extends Shoot{
 		
 		setVelocity(150f, 0);	
 		
-		setNormalRegion(TextureLoader.shootCocoNormal);
-		setEmptyRegion(TextureLoader.shootCocoEmpty);
+		setNormalRegion(TextureLoader.shootVenomNormal);
 		
-		setCollisionBounds(new Rectangle(getX(), getY(), 8, 8));	
+		setCollisionBounds(new Rectangle(getX(), getY()+2, 16, 4));	
 		setDestroyAnim(0.03f, TextureLoader.shootCocoDestroy);
 	}
 	

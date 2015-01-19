@@ -11,12 +11,12 @@ public class TextureLoader {
 	private Texture guiTexture;
 	
 	public static TextureRegion noRegion, playerNormal, snailNormal, crabNormal, snakeNormal;
-	public static TextureRegion shootCocoNormal, shootCocoEmpty;
+	public static TextureRegion shootCocoNormal, shootVenomNormal;
 	public static TextureRegion guiHungerCapsule, guiHungerBar, guiHungerText;
 	
 	public static Array<TextureRegion> playerWalk, playerJump, playerFall;
 	public static Array<TextureRegion> playerShootNormal, playerShootFall, playerShootJump, playerShootWalk;
-	public static Array<TextureRegion> shootCocoDestroy, crabWalk, crabDie, snailDie;
+	public static Array<TextureRegion> shootCocoDestroy, crabWalk, crabDie, snailDie, snakeAttack;
 	public static Array<TextureRegion> foodChicken;
 	
 	public TextureLoader(){	
@@ -44,8 +44,9 @@ public class TextureLoader {
 		playerShootWalk = getRegions(playerTexture, 0, 7, 32, 32, 5);
 		
 		shootCocoNormal = getRegion(shootTexture, 0, 0, 8, 8);
-		shootCocoEmpty = getRegion(shootTexture, 1, 0, 8, 8);
 		shootCocoDestroy = getRegions(shootTexture, 0, 1, 8, 8, 6);	
+		
+		shootVenomNormal = getRegion(shootTexture, 0, 2, 16, 8);
 		
 		crabNormal = getRegion(crabTexture, 0, 7, 32, 16);  
 		crabWalk = getRegions(crabTexture, 0, 7, 32, 16, 4);
@@ -54,7 +55,8 @@ public class TextureLoader {
 		snailNormal = getRegion(snailTexture, 0, 0, 40, 32);
 		snailDie = getRegions(snailTexture, 0, 1, 40, 32, 1);
 		
-		snakeNormal = getRegion(snakeTexture, 0, 0, 32, 32);
+		snakeNormal = getRegion(snakeTexture, 0, 1, 32, 32);
+		snakeAttack = getRegions(snakeTexture, 0, 2, 32, 32, 5);
 		
 		foodChicken = getRegions(foodTexture, 0, 0, 16, 16, 2);	
 		

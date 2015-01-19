@@ -15,7 +15,6 @@ public class ShootCoco extends Shoot {
 		setVelocity(150f, 150f);	
 		
 		setNormalRegion(TextureLoader.shootCocoNormal);
-		setEmptyRegion(TextureLoader.shootCocoEmpty);
 		
 		setCollisionBounds(new Rectangle(getX(), getY(), 8, 8));	
 		setDestroyAnim(0.03f, TextureLoader.shootCocoDestroy);				

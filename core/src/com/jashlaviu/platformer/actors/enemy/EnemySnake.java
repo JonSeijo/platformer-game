@@ -1,5 +1,6 @@
 package com.jashlaviu.platformer.actors.enemy;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Rectangle;
 import com.jashlaviu.platformer.TextureLoader;
 import com.jashlaviu.platformer.actors.enemy.Enemy.Type;
@@ -7,6 +8,8 @@ import com.jashlaviu.platformer.actors.enemy.Enemy.Type;
 public class EnemySnake extends Enemy{	
 	
 	public static final String name = "snake";
+	
+	private Animation attackAnimation;
 
 	public EnemySnake(float posX, float posY) {
 		super(posX, posY);
@@ -15,7 +18,10 @@ public class EnemySnake extends Enemy{
 		setCustomName(name);
 		
 		setRegion(TextureLoader.snakeNormal);
-		setCollisionBounds(new Rectangle(getX()+8, getY(), getWidth()-18, 26));		
+		setCollisionBounds(new Rectangle(getX()+8, getY(), getWidth()-18, 26));	
+		
+		shootDelayAnimation = 0.3f; 		
+		attackAnimation = new Animation(shootDelayAnimation/(float)TextureLoader.snakeAttack.size, TextureLoader.snakeAttack);
 	}
 	
 	@Override
@@ -32,10 +38,9 @@ public class EnemySnake extends Enemy{
 			setRegion(TextureLoader.snakeNormal);
 		}else{
 			//setregion shootanimation
-			setRegion(TextureLoader.snakeNormal);
+			setRegion(attackAnimation.getKeyFrame(shootTimer));
 			
 			if(shootTimer > shootDelayAnimation){
-				System.out.println("RELEASE");
 				setShooting(false);
 				setNeedShoot(true);
 			}
