@@ -9,7 +9,7 @@ public class EnemySnake extends Enemy{
 	
 	public static final String name = "snake";
 	
-	private Animation attackAnimation;
+	private Animation attackAnimation, dieAnimation;
 
 	public EnemySnake(float posX, float posY) {
 		super(posX, posY);
@@ -22,6 +22,7 @@ public class EnemySnake extends Enemy{
 		
 		shootDelayAnimation = 0.3f; 		
 		attackAnimation = new Animation(shootDelayAnimation/(float)TextureLoader.snakeAttack.size, TextureLoader.snakeAttack);
+		dieAnimation = new Animation(dyingTime, TextureLoader.snakeDie);
 	}
 	
 	@Override
@@ -34,9 +35,9 @@ public class EnemySnake extends Enemy{
 	public void updateState(float delta){	
 		shootTimer += delta;
 		//System.out.println(shootTimer);
-		if(!isShooting()){
+		if(!isShooting() && !isDying()){
 			setRegion(TextureLoader.snakeNormal);
-		}else{
+		}else if(isShooting() && !isDying()){
 			//setregion shootanimation
 			setRegion(attackAnimation.getKeyFrame(shootTimer));
 			
@@ -44,13 +45,16 @@ public class EnemySnake extends Enemy{
 				setShooting(false);
 				setNeedShoot(true);
 			}
+		}else if(isDying()){
+			if(dieAnimation.isAnimationFinished(animationTime)){
+				setDead(true);
+			}
+			animationTime += delta;
+			setRegion(dieAnimation.getKeyFrame(animationTime, true));
+		
 		}
 		
 		
-		
-		if(isDying()){
-			setDead(true);
-		}
 	}
 
 }

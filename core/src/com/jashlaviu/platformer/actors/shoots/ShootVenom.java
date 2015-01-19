@@ -16,7 +16,7 @@ public class ShootVenom extends Shoot{
 		setNormalRegion(TextureLoader.shootVenomNormal);
 		
 		setCollisionBounds(new Rectangle(getX(), getY()+2, 16, 4));	
-		setDestroyAnim(0.03f, TextureLoader.shootCocoDestroy);
+		setDestroyAnim(0.03f, TextureLoader.shootVenomDestroy);
 	}
 	
 	@Override
