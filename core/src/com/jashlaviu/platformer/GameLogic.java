@@ -15,10 +15,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.jashlaviu.platformer.actors.ActorJash;
-import com.jashlaviu.platformer.actors.Checkpoint;
-import com.jashlaviu.platformer.actors.ShootCoco;
-import com.jashlaviu.platformer.actors.Player;
 import com.jashlaviu.platformer.actors.ActorJash.Facing;
+import com.jashlaviu.platformer.actors.Checkpoint;
+import com.jashlaviu.platformer.actors.Player;
 import com.jashlaviu.platformer.actors.Player.State;
 import com.jashlaviu.platformer.actors.enemy.Enemy;
 import com.jashlaviu.platformer.actors.enemy.EnemyCrab;
@@ -26,7 +25,9 @@ import com.jashlaviu.platformer.actors.enemy.EnemySnail;
 import com.jashlaviu.platformer.actors.enemy.EnemySnake;
 import com.jashlaviu.platformer.actors.food.Food;
 import com.jashlaviu.platformer.actors.food.FoodChicken;
-import com.jashlaviu.platformer.actors.Shoot;
+import com.jashlaviu.platformer.actors.shoots.Shoot;
+import com.jashlaviu.platformer.actors.shoots.ShootCoco;
+import com.jashlaviu.platformer.actors.shoots.ShootVenom;
 import com.jashlaviu.platformer.screens.TestScreen;
 
 public class GameLogic {	
@@ -116,8 +117,24 @@ public class GameLogic {
 				if(player.getX() > enemy.getX() -100 && player.getX() < enemy.getX() + 100
 						&& player.getY() > enemy.getY() -100 && player.getY() < enemy.getY() + 100){
 					
+					enemy.shot();					
 				}
 			}			
+			
+			if(enemy.needShoot()){
+				enemy.setNeedShoot(false);			
+				
+				if(enemy.getType() == Enemy.Type.snake){
+					ShootVenom shoot = new ShootVenom(enemy.getX() + 10, enemy.getY()+20, enemy);	
+					if(enemy.getFacing() == Enemy.Facing.LEFT) shoot.setVelocity(-shoot.getVelocity().x, shoot.getVelocity().y);
+					shoots.add(shoot);
+					stage.addActor(shoot);
+				}
+				
+
+				
+				
+			}
 			
 			Rectangle eBounds = enemy.getCollisionBounds();			
 			
@@ -186,22 +203,22 @@ public class GameLogic {
 					}
 				}
 			}
-			
-			Iterator<Enemy> enemyIter = enemies.iterator();
-			while(enemyIter.hasNext()){
-				Enemy enemy = (Enemy)enemyIter.next();
-				
-				if(sBounds.overlaps(enemy.getCollisionBounds())){
-					if(!shoot.isDestroying()){	
-						
-						shoot.destroy();
-						
-						enemy.setDying(true);
-					}
-				}				
-				
+			if(shoot.getActorOrigin() == player){
+				Iterator<Enemy> enemyIter = enemies.iterator();
+				while(enemyIter.hasNext()){
+					Enemy enemy = (Enemy)enemyIter.next();
+					
+					if(sBounds.overlaps(enemy.getCollisionBounds())){
+						if(!shoot.isDestroying()){	
+							
+							shoot.destroy();
+							
+							enemy.setDying(true);
+						}
+					}				
+					
+				}
 			}
-			
 		}
 	}	
 

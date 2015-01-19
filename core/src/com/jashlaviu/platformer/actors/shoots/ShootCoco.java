@@ -1,7 +1,8 @@
-package com.jashlaviu.platformer.actors;
+package com.jashlaviu.platformer.actors.shoots;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.jashlaviu.platformer.TextureLoader;
+import com.jashlaviu.platformer.actors.ActorJash;
 
 public class ShootCoco extends Shoot {
 
