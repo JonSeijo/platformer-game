@@ -20,8 +20,12 @@ public class Player extends ActorJash {
 	protected Animation shootNormalAnimation, shootWalkAnimation, shootJumpAnimation, shootFallAnimation;
 	
 	protected float FRICTION, MOVESPEED, MAX_VEL_X, MAX_VEL_Y;
-	protected boolean movingLeft, movingRight;	
-	protected boolean isShooting;
+	protected boolean movingLeft, movingRight;
+	
+	protected boolean isShooting, needShoot;
+	private float shootTimer;
+	private float shootDelay;
+	private float shootDelayAnimation;
 	
 	private float hunger;
 
@@ -34,8 +38,13 @@ public class Player extends ActorJash {
 		MOVESPEED = 1500f;
 		state = State.JUMPING;	
 		
+		shootTimer = 0;
+		//shootDelay = 0.08f;
+		shootDelay = 0.4f;
+		shootDelayAnimation = 0.4f;
+		
 		initializeAnimations();		
-		setNormalRegion(TextureLoader.playerNormal);				
+		setNormalRegion(TextureLoader.playerNormal);
 		
 		bounds = new Rectangle(getX()+12, getY()+1, 8, 27);
 		setCollisionBounds(bounds);	
@@ -70,59 +79,81 @@ public class Player extends ActorJash {
 		setY(getY() + velocity.y * delta);
 	}
 	
-	public void updateRegion(float delta){
-		if(isShooting){
-			if(shootNormalAnimation.isAnimationFinished(animationTime))
-				setShooting(false);
-			
-			if(shootWalkAnimation.isAnimationFinished(animationTime))
-				setShooting(false);
-			
-			if(shootJumpAnimation.isAnimationFinished(animationTime))
-				setShooting(false);
-			
-			if(shootFallAnimation.isAnimationFinished(animationTime))
-				setShooting(false);
+	public void shoot(){
+		if(shootTimer > shootDelay){
+			shootTimer = 0;
+			setShooting(true);
 		}
-		
-		if(state == State.WALKING){					
-			if(velocity.x == 0){
-				if(isShooting){  //Is shooting and is standing
-					setRegion(shootNormalAnimation.getKeyFrame(animationTime, true));
-					animationTime += delta;
-				}else{      //NOT shooting and is standing
+	}
+	
+	public void updateState(float delta){			
+		animationTime += delta;		
+
+		if(!isShooting()){
+			if(state == State.WALKING){					
+				if(velocity.x == 0){	//Not moving				
 					animationTime = 0;
 					setRegion(normalRegion);
 				}
-			}else{
-				if(isShooting){ //Is shooting and is moving
-					setRegion(shootWalkAnimation.getKeyFrame(animationTime, true));
-					animationTime += delta;
-				}else{    //NOT shooting and is moving
+				else{ //Is moving
 					setRegion(walkAnimation.getKeyFrame(animationTime, true));
-					animationTime += delta;
+					//animationTime += delta;
+				}			
+			}
+			else if(state == State.JUMPING){
+				if(velocity.y == 0){				
+					setRegion(normalRegion);				
+				}else if(velocity.y > 0){ //NOT shooting and is jumping
+			//		animationTime += delta;
+					setRegion(jumpAnimation.getKeyFrame(animationTime, true));
+					
+				}else{  //NOT shooting and is falling
+					setRegion(fallAnimation.getKeyFrame(0, false));			
 				}
 			}
-			
 		}
-		else if(state == State.JUMPING){
-			if(velocity.y == 0){				
-				setRegion(normalRegion);				
-			}else if(velocity.y > 0){
-				if(isShooting){ //Is shooting and is jumping
-					animationTime += delta;
-					setRegion(shootJumpAnimation.getKeyFrame(animationTime, true));
-				}else{    //NOT shooting and is jumping
-					animationTime += delta;
-					setRegion(jumpAnimation.getKeyFrame(animationTime, true));
+		
+		shootTimer += delta;
+		
+		if(isShooting()){			
+			if(state == State.WALKING){					
+				if(velocity.x == 0){//is standing
+					setRegion(shootNormalAnimation.getKeyFrame(shootTimer, true));
+				}else{				//is moving
+					setRegion(shootWalkAnimation.getKeyFrame(shootTimer, true));			
+				}				
+			}
+			else if(state == State.JUMPING){
+				if(velocity.y == 0){
+					setRegion(normalRegion);
 				}
-			}else{
-				if(isShooting){ //Is shooting and is falling
-					setRegion(shootFallAnimation.getKeyFrame(animationTime, true));
-					animationTime += delta;
-				}else{   //NOT shooting and is falling
-					setRegion(fallAnimation.getKeyFrame(0, false));
+				else if(velocity.y > 0){	//is jumping
+					setRegion(shootJumpAnimation.getKeyFrame(shootTimer, true));					
+				}else{				//is falling
+					setRegion(shootFallAnimation.getKeyFrame(shootTimer, true));					
 				}
+			}
+			/*
+			if(shootTimer > shootDelayAnimation){
+				setNeedShoot(true);
+				setShooting(false);
+			}*/
+			
+			if(shootNormalAnimation.isAnimationFinished(animationTime)){
+				setShooting(false);
+				setNeedShoot(true);
+			}
+			if(shootWalkAnimation.isAnimationFinished(animationTime)){
+				setShooting(false);
+				setNeedShoot(true);
+			}
+			if(shootJumpAnimation.isAnimationFinished(animationTime)){
+				setShooting(false);
+				setNeedShoot(true);
+			}
+			if(shootFallAnimation.isAnimationFinished(animationTime)){
+				setShooting(false);
+				setNeedShoot(true);
 			}
 		}
 	}
@@ -168,6 +199,14 @@ public class Player extends ActorJash {
 		this.state = state;			
 	}
 	
+	public void setNeedShoot(boolean needShoot){
+		this.needShoot = needShoot;
+	}
+	
+	public boolean needShoot(){
+		return needShoot;
+	}
+	
 	private void initializeAnimations(){
 		walkAnimation = new Animation(100f, getRegion());
 		jumpAnimation = new Animation(100f, getRegion());
@@ -182,10 +221,10 @@ public class Player extends ActorJash {
 		setJumpAnimation(.10f, TextureLoader.playerJump);
 		setFallAnimation(.1f, TextureLoader.playerFall);
 		
-		setShootNormalAnimation(0.08f, TextureLoader.playerShootNormal);		
-		setShootFalllAnimation(0.08f, TextureLoader.playerShootFall);
-		setShootJumpAnimation(0.08f, TextureLoader.playerShootJump);		
-		setShootWalkAnimation(0.08f, TextureLoader.playerShootWalk);
+		setShootNormalAnimation(shootDelayAnimation/ (float)TextureLoader.playerShootNormal.size, TextureLoader.playerShootNormal);		
+		setShootFalllAnimation(shootDelayAnimation/(float)TextureLoader.playerShootFall.size, TextureLoader.playerShootFall);
+		setShootJumpAnimation(shootDelayAnimation/(float)TextureLoader.playerShootJump.size, TextureLoader.playerShootJump);		
+		setShootWalkAnimation(shootDelayAnimation/(float)TextureLoader.playerShootWalk.size, TextureLoader.playerShootWalk);
 	}
 	
 	public void setWalkAnimation(float duration, Array<TextureRegion> regions){

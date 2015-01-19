@@ -27,7 +27,7 @@ public class EnemySnake extends Enemy{
 	@Override
 	public void updateState(float delta){	
 		shootTimer += delta;
-		System.out.println(shootTimer);
+		//System.out.println(shootTimer);
 		if(!isShooting()){
 			setRegion(TextureLoader.snakeNormal);
 		}else{

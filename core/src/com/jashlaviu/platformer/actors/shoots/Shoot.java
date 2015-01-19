@@ -81,14 +81,14 @@ public class Shoot extends Actor{
 	}	
 	
 	public void update(float delta){		
-		if(!isInDelay()){
+		//if(!isInDelay()){
 			setRegion(normalRegion);
 			updateX(delta);
 			updateY(delta);
-		}else{			
+	/*	}else{			
 			delayCurrent += delta;
 			setRegion(emptyRegion);
-		}
+		}*/
 		
 		
 		if(isDestroying()){			
