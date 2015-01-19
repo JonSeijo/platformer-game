@@ -32,10 +32,12 @@ public class Gui {
 	public void draw(){				
 		batch.setProjectionMatrix(guiCamera.combined);
 		batch.begin();		
+		
 		batch.draw(hungerText, 30, 610, 80, 20);
 		batch.draw(hungerCapsule, 50, 200, hungerCapsule.getRegionWidth(), hungerCapsule.getRegionHeight());
 		batch.draw(hungerBar, 50, 201, hungerBar.getRegionWidth(), 
 				(hungerCapsule.getRegionHeight()-1-(gameLogic.getPlayer().getHunger()*4)));		
+		
 		batch.end();
 	}
 }

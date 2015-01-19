@@ -32,13 +32,12 @@
  </objectgroup>
  <objectgroup name="EnemyLayer1" width="80" height="30">
   <object name="snail" x="657" y="360"/>
-  <object name="snail" x="199" y="105"/>
   <object name="crab" x="614" y="187"/>
   <object name="crab" x="351" y="306"/>
+  <object name="snake" x="271" y="320"/>
  </objectgroup>
  <objectgroup name="FoodLayer" width="80" height="30">
-  <object name="chicken" x="360" y="116"/>
+  <object name="chicken" x="352" y="112"/>
   <object name="chicken" x="449" y="350"/>
-  <object name="chicken" x="86" y="81"/>
  </objectgroup>
 </map>

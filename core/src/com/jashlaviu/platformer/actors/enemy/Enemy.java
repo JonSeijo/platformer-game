@@ -2,6 +2,7 @@ package com.jashlaviu.platformer.actors.enemy;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.jashlaviu.platformer.actors.ActorJash;
@@ -9,13 +10,13 @@ import com.jashlaviu.platformer.actors.ActorJash;
 public class Enemy extends ActorJash{
 	
 	public static enum Type{
-		notype, snail, crab
+		notype, snail, crab, snake
 	}
 	private Type type;
 	
 	private String customName;
 	
-	protected boolean dying, dead;
+	protected boolean dying, dead, shooting;
 	protected float dyingTime;
 	
 	public Enemy(float posX, float posY) {
@@ -32,6 +33,10 @@ public class Enemy extends ActorJash{
 		
 		Rectangle r = getCollisionBounds();
 		shaper.rect(r.x, r.y, r.width, r.height);
+	}
+	
+	public void updateState(float delta){
+		
 	}
 	
 	protected void setType(Type type){
@@ -82,6 +87,15 @@ public class Enemy extends ActorJash{
 	public void setDyingTime(float time){
 		dyingTime = time;
 	}
+	
+	public void setShooting(boolean shooting){
+		this.shooting = shooting;
+	}
+	
+	public boolean isShooting(){
+		return shooting;
+	}
+	
 	
 	
 	

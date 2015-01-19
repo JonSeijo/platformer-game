@@ -35,12 +35,15 @@ public class TestScreen extends ScreenJash{
 		camera.position.y = 130;
 	
 		camera.update();		
-		stage.setDebugAll(false);
+		stage.setDebugAll(true);
 	}
 	
 	@Override
 	public void render(float delta) {
-		super.render(delta);		
+		super.render(delta);	
+		
+		delta = Math.min(delta, 0.1f);
+		//System.out.println(delta);
 		
 		gameLogic.update(delta);		
 		stage.act(delta);

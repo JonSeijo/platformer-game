@@ -2,7 +2,6 @@ package com.jashlaviu.platformer.actors.enemy;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.jashlaviu.platformer.TextureLoader;
 
 public class EnemyCrab extends Enemy {
@@ -30,16 +29,21 @@ public class EnemyCrab extends Enemy {
 	@Override
 	public void updateX(float delta) {
 		super.updateX(delta);		
+		
+	}
+	
+	@Override
+	public void updateState(float delta) {
 		if(!isDying()){
 			setRegion(walkAnimation.getKeyFrame(animationTime, true));
 			animationTime += delta;
-		}else{			
-			setRegion(dieAnimation.getKeyFrame(animationTime, true));
-			
+		}else{					
 			if(dieAnimation.isAnimationFinished(animationTime)){
 				setDead(true);
 			}
 			animationTime += delta;
+			setRegion(dieAnimation.getKeyFrame(animationTime, true));
+		
 		}
 	}
 

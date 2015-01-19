@@ -22,15 +22,17 @@ public class EnemySnail extends Enemy{
 	
 	@Override
 	public void updateX(float delta) {
-		super.updateX(delta);
-		
-		if(isDying()){
-			setRegion(dieAnimation.getKeyFrame(animationTime, true));
-			
+		super.updateX(delta);	
+	}
+	
+	@Override
+	public void updateState(float delta){
+		if(isDying()){					
 			if(dieAnimation.isAnimationFinished(animationTime)){
 				setDead(true);
-			}
+			}				
 			animationTime += delta;
+			setRegion(dieAnimation.getKeyFrame(animationTime, true));
 		}
 	}
 

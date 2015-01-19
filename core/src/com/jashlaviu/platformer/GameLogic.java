@@ -23,6 +23,7 @@ import com.jashlaviu.platformer.actors.Player.State;
 import com.jashlaviu.platformer.actors.enemy.Enemy;
 import com.jashlaviu.platformer.actors.enemy.EnemyCrab;
 import com.jashlaviu.platformer.actors.enemy.EnemySnail;
+import com.jashlaviu.platformer.actors.enemy.EnemySnake;
 import com.jashlaviu.platformer.actors.food.Food;
 import com.jashlaviu.platformer.actors.food.FoodChicken;
 import com.jashlaviu.platformer.actors.Shoot;
@@ -105,13 +106,24 @@ public class GameLogic {
 			} //Snails don't move, so look to the player position
 			else if(enemy.getType() == Enemy.Type.snail){
 					enemy.setFacing( (player.getX() > enemy.getX()) ? 
-							ActorJash.Facing.RIGHT : ActorJash.Facing.LEFT);			
+							ActorJash.Facing.RIGHT : ActorJash.Facing.LEFT);
+			}
+			else if(enemy.getType() == Enemy.Type.snake){
+				enemy.setFacing( (player.getX() > enemy.getX()) ? 
+						ActorJash.Facing.RIGHT : ActorJash.Facing.LEFT);
+				
+				//reemplazar con enemy.isOnRange(player)
+				if(player.getX() > enemy.getX() -100 && player.getX() < enemy.getX() + 100
+						&& player.getY() > enemy.getY() -100 && player.getY() < enemy.getY() + 100){
+					
+				}
 			}			
 			
 			Rectangle eBounds = enemy.getCollisionBounds();			
 			
 			enemy.updateY(delta);		
 			enemy.updateX(delta);	
+			enemy.updateState(delta);
 			
 			for(Rectangle mapBounds : mapCollisionBounds){
 				if(eBounds.overlaps(mapBounds)){
@@ -131,6 +143,8 @@ public class GameLogic {
 				}				
 			}
 			
+
+			
 		}
 	}
 	
@@ -140,17 +154,19 @@ public class GameLogic {
 			Shoot shoot = (Shoot)shootIter.next();
 			
 			if(!shoot.isThrowed()){
-				if(shoot.isInDelay()){									
-					if(player.getFacing() == Facing.RIGHT){
-						shoot.setPosition(player.getX() + 16, player.getY() + 12);	
-						shoot.setFacing(Shoot.Facing.RIGHT);						
-					}else{
-						shoot.setPosition(player.getX() + 10, player.getY() + 12);
-						shoot.setFacing(Shoot.Facing.LEFT);
-					}					
-				}else{  //If not throwed and not on delay
-					shoot.setThrowed(true);	
-					shoot.addVelocity(player.getVelocity().x, 0);
+				if(shoot.getActorOrigin() == player){
+					if(shoot.isInDelay()){						
+						if(player.getFacing() == Facing.RIGHT){
+							shoot.setPosition(player.getX() + 16, player.getY() + 12);	
+							shoot.setFacing(Shoot.Facing.RIGHT);						
+						}else{
+							shoot.setPosition(player.getX() + 10, player.getY() + 12);
+							shoot.setFacing(Shoot.Facing.LEFT);
+						}					
+					}else{  //If not throwed and not on delay
+						shoot.setThrowed(true);	
+						shoot.addVelocity(player.getVelocity().x, 0);
+					}
 				}
 			}
 			
@@ -306,9 +322,9 @@ public class GameLogic {
 		if(!player.isShooting()){
 			ShootCoco shoot;		
 			if(player.getFacing() == Facing.RIGHT){
-				shoot = new ShootCoco(player.getX() + 16, player.getY() + 12);
+				shoot = new ShootCoco(player.getX() + 16, player.getY() + 12, player);
 			}else{
-				shoot = new ShootCoco(player.getX() + 10, player.getY() + 12);
+				shoot = new ShootCoco(player.getX() + 10, player.getY() + 12, player);
 			}
 			
 			player.setShooting(true);
@@ -375,8 +391,11 @@ public class GameLogic {
 				EnemyCrab enemyCrab = new EnemyCrab(object.getRectangle().x, object.getRectangle().y);
 				stage.addActor(enemyCrab);
 				enemies.add(enemyCrab);	
-			}
-			
+			}else if(object.getName().equals(EnemySnake.name)){				
+				EnemySnake enemySnake = new EnemySnake(object.getRectangle().x, object.getRectangle().y);
+				stage.addActor(enemySnake);
+				enemies.add(enemySnake);	
+			}			
 			
 		}
 	}

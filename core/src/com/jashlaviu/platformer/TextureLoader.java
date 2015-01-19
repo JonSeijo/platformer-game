@@ -7,10 +7,10 @@ import com.badlogic.gdx.utils.Array;
 
 public class TextureLoader {
 	
-	private Texture noTexture, playerTexture, shootTexture, crabTexture, snailTexture, foodTexture;
+	private Texture noTexture, playerTexture, shootTexture, crabTexture, snailTexture, snakeTexture, foodTexture;
 	private Texture guiTexture;
 	
-	public static TextureRegion noRegion, playerNormal, snailNormal, crabNormal;
+	public static TextureRegion noRegion, playerNormal, snailNormal, crabNormal, snakeNormal;
 	public static TextureRegion shootCocoNormal, shootCocoEmpty;
 	public static TextureRegion guiHungerCapsule, guiHungerBar, guiHungerText;
 	
@@ -25,6 +25,7 @@ public class TextureLoader {
 		noTexture = new Texture(Gdx.files.internal("notexture.png"));			
 		snailTexture = new Texture(Gdx.files.internal("snail-1.png"));
 		crabTexture =  new Texture(Gdx.files.internal("crab-1.png"));
+		snakeTexture = new Texture(Gdx.files.internal("snake-1.png"));
 		shootTexture = new Texture(Gdx.files.internal("shoot1.png"));
 		foodTexture = new Texture(Gdx.files.internal("food.png"));
 		guiTexture = new Texture(Gdx.files.internal("gui.png"));
@@ -52,6 +53,8 @@ public class TextureLoader {
 		
 		snailNormal = getRegion(snailTexture, 0, 0, 40, 32);
 		snailDie = getRegions(snailTexture, 0, 1, 40, 32, 1);
+		
+		snakeNormal = getRegion(snakeTexture, 0, 0, 32, 32);
 		
 		foodChicken = getRegions(foodTexture, 0, 0, 16, 16, 2);	
 		
@@ -81,6 +84,7 @@ public class TextureLoader {
 		shootTexture.dispose();
 		crabTexture.dispose();
 		snailTexture.dispose();
+		snakeTexture.dispose();
 		foodTexture.dispose();
 		guiTexture.dispose();
 		

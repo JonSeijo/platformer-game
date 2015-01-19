@@ -22,6 +22,12 @@ public class Shoot extends Actor{
 	public static enum Facing{LEFT, RIGHT};
 	protected Facing facing;
 	
+	public static enum Type{
+		COCO, VENOM
+	}
+	protected Type type;
+	protected ActorJash actorOrigin;
+	
 	protected Animation destroyAnim, destroyAnimLeft, destroyAnimRight, destroyAnimDown;
 	protected float animationTime;	
 	
@@ -34,17 +40,19 @@ public class Shoot extends Actor{
 	protected final float GRAVITY;
 
 	
-	public Shoot(float x, float y){	
+	public Shoot(float x, float y, ActorJash actorOrigin){	
 		setRegion(TextureLoader.noRegion);				
 		
 		collisionBounds = new Rectangle();
 		setCollisionBounds(new Rectangle(getX(), getY(), getWidth(), getHeight()));	
 		
 		setPosition(x, y);		
-		destroyAnim = new Animation(1f, getRegion());		
+		destroyAnim = new Animation(1f, getRegion());	
+		
+		this.actorOrigin = actorOrigin;
 		
 		facing = Facing.RIGHT;
-		velocity = new Vector2(150f, 150f);		
+		velocity = new Vector2(150f, 150f);				
 		
 		GRAVITY = 700f;		
 		delay = 0.4f;
@@ -199,7 +207,12 @@ public class Shoot extends Actor{
 		}
 	}
 	
+	public Type getType(){
+		return type;
+	}
 	
-	
+	public ActorJash getActorOrigin(){
+		return actorOrigin;
+	}
 
 }
