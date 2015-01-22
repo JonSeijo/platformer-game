@@ -5,21 +5,23 @@
  </tileset>
  <layer name="Level1test" width="300" height="40">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <objectgroup name="CollisionLayer1" width="300" height="40">
-  <object x="208" y="400" width="192" height="48"/>
-  <object x="432" y="400" width="128" height="48"/>
-  <object x="640" y="400" width="320" height="48"/>
+  <object x="368" y="400" width="192" height="48"/>
+  <object x="592" y="400" width="128" height="48"/>
+  <object x="800" y="400" width="320" height="48"/>
+  <object x="32" y="400" width="144" height="48"/>
  </objectgroup>
  <objectgroup name="EnemyLayer1" width="300" height="40"/>
  <objectgroup name="FoodLayer" width="300" height="40"/>
  <objectgroup name="Deadly" width="300" height="40">
-  <object x="400" y="412" width="31" height="28"/>
-  <object x="560" y="412" width="78" height="29"/>
+  <object x="560" y="412" width="31" height="28"/>
+  <object x="720" y="412" width="78" height="29"/>
+  <object x="178" y="413" width="189" height="27"/>
  </objectgroup>
  <objectgroup name="Goal" width="300" height="40">
-  <object x="1503" y="369" width="35" height="61"/>
+  <object x="1663" y="369" width="35" height="61"/>
  </objectgroup>
 </map>

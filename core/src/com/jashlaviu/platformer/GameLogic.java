@@ -56,7 +56,7 @@ public class GameLogic {
 		enemies = new Array<Enemy>();
 		shoots = new Array<Shoot>();
 		food = new Array<Food>();		
-		checkpoints.add(new Checkpoint(300, 300));
+		checkpoints.add(new Checkpoint(420, 300));
 		
 		stage = gameScreen.getStage();
 		
@@ -347,6 +347,7 @@ public class GameLogic {
 	}
 	
 	public void handleInput(float delta){
+		
 		if(Gdx.input.isKeyPressed(Keys.DOWN)){
 			player.crouch();
 		}else{

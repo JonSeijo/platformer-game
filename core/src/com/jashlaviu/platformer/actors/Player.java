@@ -8,7 +8,7 @@ import com.jashlaviu.platformer.TextureLoader;
 
 public class Player extends ActorJash {
 	
-	private Rectangle bounds;
+	private Rectangle bounds, boundsNormal, boundsCrouch;
 	private Checkpoint checkpoint;
 	
 	public enum State{
@@ -49,7 +49,10 @@ public class Player extends ActorJash {
 		setNormalRegion(TextureLoader.playerNormal);
 		
 		bounds = new Rectangle(getX()+12, getY()+1, 8, 27);
-		setCollisionBounds(bounds);	
+		boundsNormal = new Rectangle(getX()+12, getY()+1, 8, 27);
+		boundsCrouch = new Rectangle(getX(), getY(), getWidth(), 10);
+		
+		setCollisionBounds(boundsNormal);	
 	}
 	
 	public void updateHunger(float delta){
@@ -91,7 +94,9 @@ public class Player extends ActorJash {
 	
 	public void crouch(){
 		if(state == State.WALKING){
-			state = State.CROUCHING;
+			state = State.CROUCHING;			
+			boundsCrouch = new Rectangle(getX()+2, getY(), getWidth()-4, 8);
+			setCollisionBounds(boundsCrouch);
 			animationTime = 0;
 		}
 	}
@@ -99,6 +104,9 @@ public class Player extends ActorJash {
 	public void stand(){
 		if(state == State.CROUCHING){
 			state = State.WALKING;
+			//boundsNormal = new Rectangle(getX(), getY(), getWidth(), 15);
+			boundsNormal = new Rectangle(getX()+12, getY()+1, 8, 27);
+			setCollisionBounds(boundsNormal);
 			animationTime = 0;
 		}
 	}
@@ -223,7 +231,7 @@ public class Player extends ActorJash {
 		setJumpAnimation(.10f, TextureLoader.playerJump);
 		setFallAnimation(.1f, TextureLoader.playerFall);
 		
-		crouchAnimation = new Animation(0.25f, TextureLoader.playerCrouch);
+		crouchAnimation = new Animation(0.07f, TextureLoader.playerCrouch);
 		
 		setShootNormalAnimation(shootDelayAnimation/(float)TextureLoader.playerShootNormal.size, TextureLoader.playerShootNormal);		
 		setShootFalllAnimation(shootDelayAnimation/(float)TextureLoader.playerShootFall.size, TextureLoader.playerShootFall);
