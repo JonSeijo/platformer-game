@@ -251,7 +251,8 @@ public class GameLogic {
 		
 		for(Rectangle deadlyThing : deadlyThings){
 			if(pBounds.overlaps(deadlyThing)){
-				player.die();
+				player.die();				
+				needRestart = true;
 			}
 		}
 		
@@ -375,7 +376,7 @@ public class GameLogic {
 			player.jump();	
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Keys.X)){
+		if(Gdx.input.isKeyJustPressed(Keys.X) || Gdx.input.isKeyJustPressed(Keys.SPACE)){
 			shoot();
 		}		
 		
@@ -393,7 +394,12 @@ public class GameLogic {
 		player.respawn();
 	}
 	
-	public void loadLevel(int level){	
+	public void loadLevel(int level){			
+		deadlyThings.clear();
+		goal = new Rectangle();
+		
+		food.clear();
+		
 		for(Food foodS : food) 
 			foodS.remove();
 		food.clear();

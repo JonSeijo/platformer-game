@@ -43,7 +43,6 @@ public class TestScreen extends ScreenJash{
 		super.render(delta);	
 		
 		delta = Math.min(delta, 0.1f);
-		//System.out.println(delta);
 		
 		gameLogic.update(delta);		
 		stage.act(delta);

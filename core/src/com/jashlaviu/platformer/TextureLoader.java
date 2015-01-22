@@ -41,7 +41,7 @@ public class TextureLoader {
 		playerCrouch = new Array<TextureRegion>();
 		
 		//playerCrouch.add(getRegion(playerTexture, 0, 2, 32, 32));
-		playerCrouch.addAll(getRegions(playerTexture, 1, 2, 32, 32, 2));
+		playerCrouch.addAll(getRegions(playerTexture, 0, 2, 32, 32, 3));
 				
 		playerShootNormal = getRegions(playerTexture, 0, 4, 32, 32, 5);
 		playerShootFall = getRegions(playerTexture, 0, 5, 32, 32, 5);

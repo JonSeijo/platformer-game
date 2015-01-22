@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="80" height="30" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" width="80" height="40" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="ads" tilewidth="16" tileheight="16">
   <image source="tile20001.png" width="320" height="640"/>
  </tileset>
- <layer name="Tile Layer 1" width="80" height="30">
+ <layer name="Tile Layer 1" width="80" height="40">
   <data encoding="base64" compression="zlib">
-   eJztmNEKgCAMAH3y/z+5R0t0bU4L5x0EJbb00jVKCQAA8t8D2JxcneeEUwstV7lzwJPaC45s1L40/nBcaPljP+uRXFnuOZWeP6kNfwWtv3s7/gpv+a7Vhr8nkitNX4CvYQ3OpVcfju538oSP6P4sdc9ofPz54uPPFk+TN6PUoCv81dfSM6L6G52XZf1JY9gFzfy88Wf0ORXNu8FfH+kfUJRvyEpw4wN/elbX4iu4AIUiAss=
+   eJztmM1u2zAQhDeFkbbxwckluSTNwdYz2H7/F6uIeqHBcEj9mHScigMszIiOLH2a3SVl1lRCuz6e+3i5jKeG/89apVjsJ0bjN3BAFseRwO96rFXuN85f5POc+Owg1ir3G+Yx8kSWB4u9er7EWhU4BH5Y1zBHFcfWOwYFBs7M42QDH1Uf+e81M3T/BWaBVcjRUM92MKf6c/PgP3luhnCOZ8v7D/N97QydH3rvbAObo+meotYyaxTycO9hT2aOWC9P1jzojNB/yI+5MetbePCeay3mIvrP5/DaVS9R6+1S18X9ag6/WzFP+Y/n0Is5fh0cX8pT9asci9T66lb8cv7jPqFYp/YrnWmeKvB62G9HcQzFc3s4j19nLU3xn+/bPIdTvQbXQri/60YC99W8/3lJHEPxHNZuv85aUv7raI73I+4H543+UOvF80j4eQ4We01dQ85/O4uvrzY//y1+XjiHNXBvcQ/mfj219vCa3c/Fz4NrA58Dn6+6l1ritRzWC5xDPvx89zS/dG+Cz4rPhzUk578xr5YW5i4/M+aE/NQakOfn3APmKTJQ7zSw76g16sFiL9RUip/RMew1XC+5583lp95dMAvV2zm3c/fy1UrlL3pw6b4O75drmPLfhr77lf6bKvQe3i/yw3ufw5DXH1iPw9xbHw99/Lh8+vjVBraqBtyT/1K1MtVv5uRw6t0jclTnQ8a8pro3fkHcN1L9htc9OYbum199/O7jyeI1O7+XxN5xojHm9bX5u6G4RlsKJfbnmAc3MP/ex0cff2zw3fYyv7V4r83jXI4v1SYxXqJPCuYZ4qFw+HnD7/Fem9egNfYbpfgpVioeCwfy471irpaUUil+6Df2II5/Fg48P9bZpf0Cc9wDcz2VB9fUANcU/9Xgl6u330nKe1sa1/Lf/8IP41N8luaHz+Y7S+Wq6sGNn5Zixv5r/LRyfuOa2PjFyvULHjd+sXL8Wv8YV2q/xvu5xk9LcVJMa/G75/XfX2rNfNI=
   </data>
  </layer>
- <objectgroup name="Goal" width="80" height="30">
-  <object x="870" y="297"/>
+ <objectgroup name="CollisionLayer1" width="80" height="40">
+  <object x="320" y="432" width="320" height="50"/>
+  <object x="673" y="370" width="112" height="14"/>
+  <object x="817" y="416" width="111" height="16"/>
+  <object x="961" y="464" width="254" height="16"/>
+ </objectgroup>
+ <objectgroup name="Deadly" width="80" height="40"/>
+ <objectgroup name="EnemyLayer1" width="80" height="40">
+  <object name="snake" x="1126" y="437"/>
+  <object name="snake" x="1064" y="274"/>
+  <object name="crab" x="873" y="379"/>
+  <object name="crab" x="821" y="390"/>
+  <object name="snail" x="688" y="344"/>
+ </objectgroup>
+ <objectgroup name="Goal" width="80" height="40">
+  <object x="1173" y="430" width="19" height="24"/>
  </objectgroup>
 </map>

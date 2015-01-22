@@ -56,7 +56,7 @@ public class Player extends ActorJash {
 	}
 	
 	public void updateHunger(float delta){
-		hunger += delta;
+		hunger += delta*2;
 		
 		if(hunger >= 100){
 			hunger = 100;
