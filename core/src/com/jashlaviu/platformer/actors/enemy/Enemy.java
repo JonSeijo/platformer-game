@@ -87,6 +87,8 @@ public class Enemy extends ActorJash{
 		if(dying){
 			velocity.set(0, 0);
 			animationTime = 0;		
+			collisionBounds.width = 0;
+			collisionBounds.height = 0;
 			this.addAction(new ParallelAction(Actions.moveTo(getX(), getY() + 40, dyingTime), Actions.fadeOut(dyingTime)));
 		}
 	}

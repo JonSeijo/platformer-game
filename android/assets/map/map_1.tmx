@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="300" height="40" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="Tile2-1" tilewidth="16" tileheight="16">
+  <image source="tile20001.png" width="320" height="640"/>
+ </tileset>
+ <layer name="Level1test" width="300" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztnWlu00AARp0KNW2B8o8ltKVNBQh+sLapALEo7OVXS7kCgisguAKCK7DcAe4Ad+KzmFGckafxEsszzXvSU53Gtjyp5snjVmo3SZIuIiIiIk5dAIDQoVcAEAv0CgBigV4BQCzQKwCIBXoFALFArwAgFugVAMQCvQKAWKBXABAL9AoAYoFeAUAs0CsAiAV6BQCxQK8AIBZmsVdn5JzsmK+n270cACjILPaqLeYVyK5ckItySR6XJ+RJuSxPddq+SoBwCb1X6RwvMs8tId879XRR5+WKXJVr8oJclxuyLzfpFYCX0HvV64yaVaZbWYoem97bpI3L9i77um4Dr+kE1+UNeVPekrflltyWA7lDrwC8TKNX68YN2ZebmfeyraliOsd7nfFulW1WmWObXI8Nde7H8ol8Kp/J5/KFfCl35St6BeBlGr3aMm7LgdzJvGdbU9WhaVa2W5PWVC72WF+z3EY23bRjjl/kV/mm3mkBjjxVe7UgF+WSef3O+N7Zz7amqsOM9nuT1lQu9ljbrK7TJ7eRRZ4x1XlOljbqrTHd/iF/5nx2ADCO7VXZ+4oVuSrXzOuPxk/O+bO9qapdQ7mv89ZURcbhNsptZNPPmNJGfTCm27/k75zPDgDGyfaqaLPOJqPnz5N8JO/LB/Jhgf2uyKvGScf4nMv5areXcxrl62NTz5jSRn02ptt/5N/k/5oQAPzYXpVZC80nxT2Qe3Jfvp6w375xL7N92DFV7LfUqCxpo74Z0+3vyWhNCAB+bK/KrIXa/t+udRzUbJS9t3T/xsFn3r6+Y84V/7EBzCR2Hl/0eEleTsbncNvNqeNuzfupad7r5QkAfuw8vpOjr11tN6eO9neFVZ+pN319AODnsHni9uuuvJc0P2eb7kGd+yt6BdAeVeZJ281pswehXx/AUYZehTV2APBDr8IaOwD4oVdhjR0A/NCrsMYOAH7oVVhjBwA/9CqssQOAH3oV1tgBwA+9CmvsAODnH51ig9U=
+  </data>
+ </layer>
+ <objectgroup name="CollisionLayer1" width="300" height="40">
+  <object x="208" y="400" width="192" height="48"/>
+  <object x="432" y="400" width="128" height="48"/>
+  <object x="640" y="400" width="320" height="48"/>
+ </objectgroup>
+ <objectgroup name="EnemyLayer1" width="300" height="40"/>
+ <objectgroup name="FoodLayer" width="300" height="40"/>
+ <objectgroup name="Deadly" width="300" height="40">
+  <object x="400" y="412" width="31" height="28"/>
+  <object x="560" y="412" width="78" height="29"/>
+ </objectgroup>
+ <objectgroup name="Goal" width="300" height="40">
+  <object x="1503" y="369" width="35" height="61"/>
+ </objectgroup>
+</map>

@@ -36,7 +36,10 @@ public class GameLogic {
 	private TiledMap map;
 	
 	private Stage stage;		
-	private Player player;	
+	private Player player;
+	private Rectangle goal;
+	
+	private Array<Rectangle> deadlyThings;
 	private Array<Food> food;
 	private Array<Shoot> shoots;
 	private Array<Enemy> enemies;
@@ -48,11 +51,12 @@ public class GameLogic {
 		this.gameScreen = gameScreen;	
 		
 		mapCollisionBounds = new Array<Rectangle>();
+		deadlyThings = new Array<Rectangle>();
 		checkpoints = new Array<Checkpoint>();
 		enemies = new Array<Enemy>();
 		shoots = new Array<Shoot>();
 		food = new Array<Food>();		
-		checkpoints.add(new Checkpoint(100, 200));
+		checkpoints.add(new Checkpoint(300, 300));
 		
 		stage = gameScreen.getStage();
 		
@@ -188,6 +192,14 @@ public class GameLogic {
 					}
 				}
 			}
+			
+			for(Rectangle deadlyThing : deadlyThings){
+				if(sBounds.overlaps(deadlyThing)){
+					if(!shoot.isDestroying()){	
+						shoot.destroy();
+					}
+				}
+			}
 			if(shoot.getActorOrigin() == player){
 				Iterator<Enemy> enemyIter = enemies.iterator();
 				while(enemyIter.hasNext()){
@@ -230,8 +242,17 @@ public class GameLogic {
 		player.updateY(delta);			
 		handleYmapCollision(player, pBounds);
 		
-		player.updateState(delta);
+		if(pBounds.overlaps(goal)){
+			levelUp();
+		}
 		
+		for(Rectangle deadlyThing : deadlyThings){
+			if(pBounds.overlaps(deadlyThing)){
+				player.die();
+			}
+		}
+		
+		player.updateState(delta);		
 		player.updateHunger(delta);
 		
 		if(player.needShoot()){
@@ -335,7 +356,7 @@ public class GameLogic {
 			player.setMovingRight(false);
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Keys.Z)){
+		if(Gdx.input.isKeyJustPressed(Keys.Z) || Gdx.input.isKeyJustPressed(Keys.UP)){
 			player.jump();	
 		}
 		
@@ -351,6 +372,12 @@ public class GameLogic {
 	
 	private void shoot(){	
 		player.shoot();	
+	}
+	
+	private void levelUp(){
+		level++;
+		loadLevel(level);
+		player.respawn();
 	}
 	
 	public void loadLevel(int level){	
@@ -374,14 +401,46 @@ public class GameLogic {
 		param.textureMinFilter = TextureFilter.Nearest;
 		param.textureMagFilter = TextureFilter.Nearest;
 		
-		map = mapLoader.load("map/map" + level + ".tmx", param);
+		map = mapLoader.load("map/map_" + level + ".tmx", param);
 		
 		loadMapBounds(map.getLayers().get("CollisionLayer1"));
 		loadEnemies(map.getLayers().get("EnemyLayer1"));
 		loadFood(map.getLayers().get("FoodLayer"));		
+		loadGoal(map.getLayers().get("Goal"));
+		loadDeadly(map.getLayers().get("Deadly"));
+		
+		gameScreen.setMapRenderer(map);
+	}
+	
+	private void loadDeadly(MapLayer deadlyLayer){
+		if(deadlyLayer != null){
+			MapObjects mapObjects = deadlyLayer.getObjects();
+				
+			for(RectangleMapObject object : 
+				mapObjects.getByType(RectangleMapObject.class)){
+				
+				Rectangle rec = object.getRectangle();
+				deadlyThings.add(new Rectangle(rec));			
+			}
+		}
+	}	
+	
+	
+	private void loadGoal(MapLayer goalLayer){
+		if(goalLayer != null){
+			MapObjects mapObjects = goalLayer.getObjects();
+				
+			for(RectangleMapObject object : 
+				mapObjects.getByType(RectangleMapObject.class)){
+				
+				Rectangle rec = object.getRectangle();
+				goal = new Rectangle(rec);			
+			}
+		}
 	}
 	
 	private void loadFood(MapLayer foodLayer){
+		if(foodLayer != null){
 		MapObjects mapObjects = foodLayer.getObjects();
 		
 		for(RectangleMapObject object : 
@@ -393,9 +452,11 @@ public class GameLogic {
 				food.add(foodChicken);	
 			}
 		}
+		}
 	}
 	
 	private void loadEnemies(MapLayer enemyLayer){
+		if(enemyLayer != null){
 		MapObjects mapObjects = enemyLayer.getObjects();
 		
 		for(RectangleMapObject object : 
@@ -416,9 +477,11 @@ public class GameLogic {
 			}			
 			
 		}
+		}
 	}
 	
 	private void loadMapBounds(MapLayer collisionLayer){
+		if(collisionLayer != null){
 		MapObjects mapObjects = collisionLayer.getObjects();
 		
 		for(RectangleMapObject object : 
@@ -426,6 +489,7 @@ public class GameLogic {
 			
 			Rectangle rec = object.getRectangle();
 			mapCollisionBounds.add(new Rectangle(rec));			
+		}
 		}
 	}
 	

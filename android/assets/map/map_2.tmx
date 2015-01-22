@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="30" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="ads" tilewidth="16" tileheight="16">
+  <image source="tile20001.png" width="320" height="640"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="80" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztmNEKgCAMAH3y/z+5R0t0bU4L5x0EJbb00jVKCQAA8t8D2JxcneeEUwstV7lzwJPaC45s1L40/nBcaPljP+uRXFnuOZWeP6kNfwWtv3s7/gpv+a7Vhr8nkitNX4CvYQ3OpVcfju538oSP6P4sdc9ofPz54uPPFk+TN6PUoCv81dfSM6L6G52XZf1JY9gFzfy88Wf0ORXNu8FfH+kfUJRvyEpw4wN/elbX4iu4AIUiAss=
+  </data>
+ </layer>
+ <objectgroup name="Goal" width="80" height="30">
+  <object x="870" y="297"/>
+ </objectgroup>
+</map>

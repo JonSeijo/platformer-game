@@ -17,7 +17,7 @@ public class EnemySnail extends Enemy{
 		dieAnimation = new Animation(dyingTime, TextureLoader.snailDie);
 				
 		setRegion(TextureLoader.snailNormal);
-		setCollisionBounds(new Rectangle(getX()+6, getY(), getWidth()-15, 20));
+		setCollisionBounds(new Rectangle(getX()+10, getY(), getWidth()-18, 20));
 	}
 	
 	@Override

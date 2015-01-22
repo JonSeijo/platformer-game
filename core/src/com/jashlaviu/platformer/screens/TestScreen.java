@@ -57,10 +57,10 @@ public class TestScreen extends ScreenJash{
 		batch.setProjectionMatrix(camera.combined);
 		mapRenderer.render();			
 		stage.draw();
-		
+		//drawDebug();		
 		gui.draw();
 		
-		//drawDebug();
+
 	}
 	
 	private void drawDebug(){
@@ -96,7 +96,9 @@ public class TestScreen extends ScreenJash{
 	}
 	
 	public void setMapRenderer(TiledMap map){
-		mapRenderer.setMap(map);
+		//mapRenderer.setMap(map);
+		mapRenderer = new OrthogonalTiledMapRenderer(map, batch);
+		mapRenderer.setView(camera);
 	}	
 	
 	public void addActor(ActorJash actor){
