@@ -12,17 +12,19 @@ public class Player extends ActorJash {
 	private Checkpoint checkpoint;
 	
 	public enum State{
-		WALKING, JUMPING, LANDING
+		WALKING, JUMPING, CROUCHING
 	}
 	
-	protected State state;	
-	protected Animation walkAnimation, jumpAnimation, fallAnimation;
-	protected Animation shootNormalAnimation, shootWalkAnimation, shootJumpAnimation, shootFallAnimation;
+	private State state;	
+	private Animation walkAnimation, jumpAnimation, fallAnimation, crouchAnimation;
+	private Animation shootNormalAnimation, shootWalkAnimation, shootJumpAnimation, shootFallAnimation;
 	
-	protected float FRICTION, MOVESPEED, MAX_VEL_X, MAX_VEL_Y;
-	protected boolean movingLeft, movingRight;
+	private float FRICTION, MOVESPEED, MAX_VEL_X, MAX_VEL_Y;
+	private boolean movingLeft, movingRight;
 	
-	protected boolean isShooting, needShoot;
+	private boolean isShooting, needShoot;
+	private int shootsLeft;
+	
 	private float shootTimer;
 	private float shootDelay;
 	private float shootDelayAnimation;
@@ -38,8 +40,8 @@ public class Player extends ActorJash {
 		MOVESPEED = 1500f;
 		state = State.JUMPING;	
 		
+		shootsLeft = 5;
 		shootTimer = 0;
-		//shootDelay = 0.08f;
 		shootDelay = 0.4f;
 		shootDelayAnimation = 0.4f;
 		
@@ -80,9 +82,24 @@ public class Player extends ActorJash {
 	}
 	
 	public void shoot(){
-		if(shootTimer > shootDelay){
+		if(shootsLeft > 0 && shootTimer > shootDelay && state != State.CROUCHING){
+			shootsLeft--;
 			shootTimer = 0;
 			setShooting(true);
+		}
+	}
+	
+	public void crouch(){
+		if(state == State.WALKING){
+			state = State.CROUCHING;
+			animationTime = 0;
+		}
+	}
+	
+	public void stand(){
+		if(state == State.CROUCHING){
+			state = State.WALKING;
+			animationTime = 0;
 		}
 	}
 	
@@ -109,6 +126,8 @@ public class Player extends ActorJash {
 				}else{  //NOT shooting and is falling
 					setRegion(fallAnimation.getKeyFrame(0, false));			
 				}
+			}else if(state == State.CROUCHING){
+				setRegion(crouchAnimation.getKeyFrame(animationTime, false));
 			}
 		}		
 
@@ -192,7 +211,8 @@ public class Player extends ActorJash {
 	private void initializeAnimations(){
 		walkAnimation = new Animation(100f, getRegion());
 		jumpAnimation = new Animation(100f, getRegion());
-		fallAnimation = new Animation(100f, getRegion());		
+		fallAnimation = new Animation(100f, getRegion());	
+		crouchAnimation = new Animation(100f, getRegion());
 		
 		shootNormalAnimation = new Animation(100f, getRegion());
 		shootWalkAnimation = new Animation(100f, getRegion());
@@ -203,7 +223,9 @@ public class Player extends ActorJash {
 		setJumpAnimation(.10f, TextureLoader.playerJump);
 		setFallAnimation(.1f, TextureLoader.playerFall);
 		
-		setShootNormalAnimation(shootDelayAnimation/ (float)TextureLoader.playerShootNormal.size, TextureLoader.playerShootNormal);		
+		crouchAnimation = new Animation(0.25f, TextureLoader.playerCrouch);
+		
+		setShootNormalAnimation(shootDelayAnimation/(float)TextureLoader.playerShootNormal.size, TextureLoader.playerShootNormal);		
 		setShootFalllAnimation(shootDelayAnimation/(float)TextureLoader.playerShootFall.size, TextureLoader.playerShootFall);
 		setShootJumpAnimation(shootDelayAnimation/(float)TextureLoader.playerShootJump.size, TextureLoader.playerShootJump);		
 		setShootWalkAnimation(shootDelayAnimation/(float)TextureLoader.playerShootWalk.size, TextureLoader.playerShootWalk);
@@ -253,6 +275,7 @@ public class Player extends ActorJash {
 	 * Resets player position to the stored checkpoint
 	 */
 	public void respawn(){
+		shootsLeft = 5;
 		hunger = 0;
 		setPosition(checkpoint.getX(), checkpoint.getY());
 	}
@@ -272,6 +295,18 @@ public class Player extends ActorJash {
 	
 	public float getHunger(){
 		return hunger;
+	}
+	
+	public void setShootsLeft(int shoots){
+		shootsLeft = shoots;
+	}
+	
+	public int getShootsLeft(){
+		return shootsLeft;
+	}
+	
+	public State getState(){
+		return state;
 	}
 
 }

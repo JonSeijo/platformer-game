@@ -235,12 +235,15 @@ public class GameLogic {
 		Rectangle pBounds = player.getCollisionBounds();
 		
 		//Updates every actor X position
-		player.updateX(delta);			
-		handleXmapCollision(player, pBounds);	
 		
-		//Updates every actor Y position
-		player.updateY(delta);			
-		handleYmapCollision(player, pBounds);
+		if(player.getState() != State.CROUCHING){
+			player.updateX(delta);			
+			handleXmapCollision(player, pBounds);	
+		
+			//Updates every actor Y position
+			player.updateY(delta);			
+			handleYmapCollision(player, pBounds);
+		}
 		
 		if(pBounds.overlaps(goal)){
 			levelUp();
@@ -344,14 +347,25 @@ public class GameLogic {
 	}
 	
 	public void handleInput(float delta){
+		if(Gdx.input.isKeyPressed(Keys.DOWN)){
+			player.crouch();
+		}else{
+			player.stand();
+		}
+		
 		if(Gdx.input.isKeyPressed(Keys.LEFT)){
-			player.moveLeft();		
+			if(player.getState() != State.CROUCHING){
+				player.moveLeft();
+			}	
 		}else{
 			player.setMovingLeft(false);
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-			player.moveRight();
+			if(player.getState() != State.CROUCHING){
+				player.moveRight();
+			}
+					
 		}else{
 			player.setMovingRight(false);
 		}
@@ -364,9 +378,7 @@ public class GameLogic {
 			shoot();
 		}		
 		
-		if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
-		//	player.respawn();
-		}
+
 		
 	}
 	

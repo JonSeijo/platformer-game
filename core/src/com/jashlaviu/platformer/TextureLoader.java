@@ -14,7 +14,7 @@ public class TextureLoader {
 	public static TextureRegion shootCocoNormal, shootVenomNormal;
 	public static TextureRegion guiHungerCapsule, guiHungerBar, guiHungerText;
 	
-	public static Array<TextureRegion> playerWalk, playerJump, playerFall;
+	public static Array<TextureRegion> playerWalk, playerJump, playerFall, playerCrouch;
 	public static Array<TextureRegion> playerShootNormal, playerShootFall, playerShootJump, playerShootWalk;
 	public static Array<TextureRegion> shootCocoDestroy, shootVenomDestroy, crabWalk, crabDie, snailDie, snakeDie, snakeAttack;
 	public static Array<TextureRegion> foodChicken;
@@ -37,6 +37,7 @@ public class TextureLoader {
 		playerWalk = getRegions(playerTexture, 1, 0, 32, 32, 8);
 		playerFall = getRegions(playerTexture, 1, 1, 32, 32, 1); 
 		playerJump = getRegions(playerTexture, 2, 1, 32, 32, 3); 
+		playerCrouch = getRegions(playerTexture, 0, 2, 32, 32, 2);
 				
 		playerShootNormal = getRegions(playerTexture, 0, 4, 32, 32, 5);
 		playerShootFall = getRegions(playerTexture, 0, 5, 32, 32, 5);

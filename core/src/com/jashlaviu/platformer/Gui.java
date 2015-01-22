@@ -38,6 +38,10 @@ public class Gui {
 		batch.draw(hungerBar, 50, 201, hungerBar.getRegionWidth(), 
 				(hungerCapsule.getRegionHeight()-1-(gameLogic.getPlayer().getHunger()*4)));		
 		
+		for(int i = 0; i < gameLogic.getPlayer().getShootsLeft(); i++){
+			batch.draw(TextureLoader.shootCocoNormal, 550 + (i * 30), 750, 24, 30);			
+		}
+		
 		batch.end();
 	}
 }
