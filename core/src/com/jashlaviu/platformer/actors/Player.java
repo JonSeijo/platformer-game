@@ -1,10 +1,14 @@
 package com.jashlaviu.platformer.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.utils.Array;
 import com.jashlaviu.platformer.TextureLoader;
+import com.sun.corba.se.impl.presentation.rmi.DynamicAccessPermission;
 
 public class Player extends ActorJash {
 	
@@ -16,14 +20,17 @@ public class Player extends ActorJash {
 	}
 	
 	private State state;	
-	private Animation walkAnimation, jumpAnimation, fallAnimation, crouchAnimation;
+	private Animation walkAnimation, jumpAnimation, fallAnimation, crouchAnimation, dieAnimation;
 	private Animation shootNormalAnimation, shootWalkAnimation, shootJumpAnimation, shootFallAnimation;
 	
 	private float FRICTION, MOVESPEED, MAX_VEL_X, MAX_VEL_Y;
 	private boolean movingLeft, movingRight;
 	
+	private boolean dying;
+	private float dyingTimer;
+	
 	private boolean isShooting, needShoot;
-	private int shootsLeft;
+	private int shootsLeft, jumpTimes;
 	
 	private float shootTimer;
 	private float shootDelay;
@@ -60,7 +67,7 @@ public class Player extends ActorJash {
 		
 		if(hunger >= 100){
 			hunger = 100;
-			System.out.println("DIE FOR HUNGER");
+			die();
 		}
 	}
 	
@@ -165,6 +172,11 @@ public class Player extends ActorJash {
 			}
 
 		}
+		
+		if(isDying()){
+			dyingTimer += delta;	
+			setRegion(dieAnimation.getKeyFrame(dyingTimer, false));
+		}
 	}
 	
 	public void eat(float hungerSatisfaction){
@@ -200,12 +212,18 @@ public class Player extends ActorJash {
 	}
 	
 	public void jump(){
-		velocity.y = 250;
-		setState(State.JUMPING);
+		if(jumpTimes < 2){
+			velocity.y = 250;
+			jumpTimes++;
+			setState(State.JUMPING);		
+		}
 	}
 	
 	public void setState(State state){
-		this.state = state;			
+		this.state = state;	
+		if(state == State.WALKING){
+			jumpTimes = 0;
+		}
 	}
 	
 	public void setNeedShoot(boolean needShoot){
@@ -232,6 +250,7 @@ public class Player extends ActorJash {
 		setFallAnimation(.1f, TextureLoader.playerFall);
 		
 		crouchAnimation = new Animation(0.07f, TextureLoader.playerCrouch);
+		dieAnimation = new Animation(0.07f, TextureLoader.playerDie);
 		
 		setShootNormalAnimation(shootDelayAnimation/(float)TextureLoader.playerShootNormal.size, TextureLoader.playerShootNormal);		
 		setShootFalllAnimation(shootDelayAnimation/(float)TextureLoader.playerShootFall.size, TextureLoader.playerShootFall);
@@ -283,14 +302,20 @@ public class Player extends ActorJash {
 	 * Resets player position to the stored checkpoint
 	 */
 	public void respawn(){
+		addAction(Actions.color(Color.WHITE));
 		shootsLeft = 5;
+		dyingTimer = 0;
+		dying = false;
 		hunger = 0;
 		setPosition(checkpoint.getX(), checkpoint.getY());
 	}
 	
 	public void die(){
 		// funcion de perder vida
-		respawn();
+		if(!dying){
+			dying = true;
+			this.addAction(new ParallelAction(Actions.moveTo(getX(), getY() + 40, 2), Actions.fadeOut(2)));
+		}
 	}
 	
 	public void setCheckpoint(Checkpoint checkpoint){
@@ -315,6 +340,14 @@ public class Player extends ActorJash {
 	
 	public State getState(){
 		return state;
+	}
+	
+	public boolean isDying(){
+		return dying;
+	}
+	
+	public boolean isDead(){
+		return dyingTimer >= 2;
 	}
 
 }

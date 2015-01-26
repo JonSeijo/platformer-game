@@ -25,18 +25,32 @@ public class Gui {
 		guiCamera.update();
 		
 		hungerCapsule = TextureLoader.guiHungerCapsule;		
-		hungerBar = TextureLoader.guiHungerBar;
+		hungerBar = TextureLoader.guiHungerBarGreen;
 		hungerText = TextureLoader.guiHungerText;
 	}
 	
-	public void draw(){				
+	public void draw(){	
+		if(gameLogic.getPlayer().getHunger() >= 70){			
+			hungerBar = TextureLoader.guiHungerBarRed;			
+		}else if(gameLogic.getPlayer().getHunger() >= 40){
+			hungerBar = TextureLoader.guiHungerBarYellow;
+		}else if(gameLogic.getPlayer().getHunger() >= 0){			
+			hungerBar = TextureLoader.guiHungerBarGreen;			
+		} 
+		
+		float hungerHeight = (hungerCapsule.getRegionHeight()-(gameLogic.getPlayer().getHunger()*4)-8);
+		if(hungerHeight < 0) hungerHeight = 1;	
+		
 		batch.setProjectionMatrix(guiCamera.combined);
 		batch.begin();		
 		
-		batch.draw(hungerText, 30, 610, 80, 20);
+	//	batch.draw(hungerText, 30, 610, 80, 20);
+		batch.draw(TextureLoader.foodChicken.get(0), 40, 610, 48, 64);
 		batch.draw(hungerCapsule, 50, 200, hungerCapsule.getRegionWidth(), hungerCapsule.getRegionHeight());
-		batch.draw(hungerBar, 50, 201, hungerBar.getRegionWidth(), 
-				(hungerCapsule.getRegionHeight()-1-(gameLogic.getPlayer().getHunger()*4)));		
+		
+		batch.draw(hungerBar, 50, 204, hungerBar.getRegionWidth(), hungerHeight);	
+		
+		batch.draw(TextureLoader.guiSkull, 34, 120, 64, 80);
 		
 		for(int i = 0; i < gameLogic.getPlayer().getShootsLeft(); i++){
 			batch.draw(TextureLoader.shootCocoNormal, 550 + (i * 30), 750, 24, 30);			

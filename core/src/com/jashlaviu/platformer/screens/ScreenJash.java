@@ -30,7 +30,8 @@ public class ScreenJash extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(147.f/255.f, 214.f/255.f, 250.f/255.f, 1);
+		//Gdx.gl.glClearColor(93.f/255.f, 184.f/255.f, 225.f/255.f, 1);
+		Gdx.gl.glClearColor(134.f/255.f, 194.f/255.f, 246.f/255.f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}
 	

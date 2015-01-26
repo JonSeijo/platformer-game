@@ -14,7 +14,9 @@
   <object x="817" y="416" width="111" height="16"/>
   <object x="961" y="464" width="254" height="16"/>
  </objectgroup>
- <objectgroup name="Deadly" width="80" height="40"/>
+ <objectgroup name="Deadly" width="80" height="40">
+  <object x="619" y="513" width="436" height="52"/>
+ </objectgroup>
  <objectgroup name="EnemyLayer1" width="80" height="40">
   <object name="snake" x="1126" y="437"/>
   <object name="snake" x="1064" y="274"/>

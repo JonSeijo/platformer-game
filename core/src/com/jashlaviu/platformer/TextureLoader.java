@@ -12,9 +12,9 @@ public class TextureLoader {
 	
 	public static TextureRegion noRegion, playerNormal, snailNormal, crabNormal, snakeNormal;
 	public static TextureRegion shootCocoNormal, shootVenomNormal;
-	public static TextureRegion guiHungerCapsule, guiHungerBar, guiHungerText;
+	public static TextureRegion guiHungerCapsule, guiHungerBarGreen, guiHungerBarYellow, guiHungerBarRed, guiHungerText, guiSkull;
 	
-	public static Array<TextureRegion> playerWalk, playerJump, playerFall, playerCrouch;
+	public static Array<TextureRegion> playerWalk, playerJump, playerFall, playerCrouch, playerDie;
 	public static Array<TextureRegion> playerShootNormal, playerShootFall, playerShootJump, playerShootWalk;
 	public static Array<TextureRegion> shootCocoDestroy, shootVenomDestroy, crabWalk, crabDie, snailDie, snakeDie, snakeAttack;
 	public static Array<TextureRegion> foodChicken;
@@ -38,10 +38,8 @@ public class TextureLoader {
 		playerFall = getRegions(playerTexture, 1, 1, 32, 32, 1); 
 		playerJump = getRegions(playerTexture, 2, 1, 32, 32, 3); 
 		
-		playerCrouch = new Array<TextureRegion>();
-		
-		//playerCrouch.add(getRegion(playerTexture, 0, 2, 32, 32));
-		playerCrouch.addAll(getRegions(playerTexture, 0, 2, 32, 32, 3));
+		playerCrouch = getRegions(playerTexture, 0, 2, 32, 32, 3);
+		playerDie = getRegions(playerTexture,  0, 3, 32, 32, 2);
 				
 		playerShootNormal = getRegions(playerTexture, 0, 4, 32, 32, 5);
 		playerShootFall = getRegions(playerTexture, 0, 5, 32, 32, 5);
@@ -68,8 +66,11 @@ public class TextureLoader {
 		foodChicken = getRegions(foodTexture, 0, 0, 16, 16, 2);	
 		
 		guiHungerCapsule = getRegion(guiTexture, 0, 0, 32, 400);
-		guiHungerBar = getRegion(guiTexture, 1, 0, 32, 16);		
+		guiHungerBarGreen = getRegion(guiTexture, 1, 0, 32, 16);	
+		guiHungerBarYellow = getRegion(guiTexture, 1, 1, 32, 16);
+		guiHungerBarRed = getRegion(guiTexture, 1, 2, 32, 16);
 		guiHungerText = getRegion(guiTexture, 1, 0, 80, 16);
+		guiSkull = getRegion(guiTexture, 1, 1, 64, 64);
 	}
 	
 	private TextureRegion getRegion(Texture texture, int x, int y, int width, int height){

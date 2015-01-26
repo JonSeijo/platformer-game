@@ -216,12 +216,10 @@ public class GameLogic {
 			
 			if(shoot.getActorOrigin() != player){
 				if(sBounds.overlaps(player.getCollisionBounds())){
-					player.die();				
-					needRestart = true;
+					player.die();					
 				}
 			}			
-			
-		}
+		}	
 		
 		if(needRestart){
 			restartLevel();
@@ -236,7 +234,7 @@ public class GameLogic {
 		
 		//Updates every actor X position
 		
-		if(player.getState() != State.CROUCHING){
+		if(player.getState() != State.CROUCHING && !player.isDying()){
 			player.updateX(delta);			
 			handleXmapCollision(player, pBounds);	
 		
@@ -247,14 +245,20 @@ public class GameLogic {
 		
 		if(pBounds.overlaps(goal)){
 			levelUp();
-		}
+		}		
 		
 		for(Rectangle deadlyThing : deadlyThings){
 			if(pBounds.overlaps(deadlyThing)){
-				player.die();				
-				needRestart = true;
+				player.die();
 			}
 		}
+		
+		
+		if(player.isDead()){	
+			player.respawn();
+			needRestart = true;
+		}
+		
 		
 		player.updateState(delta);		
 		player.updateHunger(delta);
@@ -281,8 +285,7 @@ public class GameLogic {
 			if(pBounds.overlaps(enemy.getCollisionBounds())){
 				//If the enemy isn't dying
 				if(!enemy.isDying()){
-					player.die();
-					needRestart = true;										
+					player.die();									
 				}
 			}
 		}	
@@ -300,10 +303,8 @@ public class GameLogic {
 				player.eat(foodSingle.getHungerSatisfaction());
 				foodSingle.remove();
 				foodIter.remove();
-			}
-			
-		}
-				
+			}			
+		}		
 
 	}
 
@@ -347,41 +348,38 @@ public class GameLogic {
 		}
 	}
 	
-	public void handleInput(float delta){
-		
-		if(Gdx.input.isKeyPressed(Keys.DOWN)){
-			player.crouch();
-		}else{
-			player.stand();
-		}
-		
-		if(Gdx.input.isKeyPressed(Keys.LEFT)){
-			if(player.getState() != State.CROUCHING){
-				player.moveLeft();
-			}	
-		}else{
-			player.setMovingLeft(false);
-		}
-		
-		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-			if(player.getState() != State.CROUCHING){
-				player.moveRight();
+	public void handleInput(float delta){		
+		if(!player.isDying()){			
+			if(Gdx.input.isKeyPressed(Keys.DOWN)){
+				player.crouch();
+			}else{
+				player.stand();
 			}
-					
-		}else{
-			player.setMovingRight(false);
+			
+			if(Gdx.input.isKeyPressed(Keys.LEFT)){
+				if(player.getState() != State.CROUCHING && !player.isDying()){
+					player.moveLeft();
+				}	
+			}else{
+				player.setMovingLeft(false);
+			}
+			
+			if(Gdx.input.isKeyPressed(Keys.RIGHT)){
+				if(player.getState() != State.CROUCHING){
+					player.moveRight();
+				}					
+			}else{
+				player.setMovingRight(false);
+			}
+			
+			if(Gdx.input.isKeyJustPressed(Keys.Z) || Gdx.input.isKeyJustPressed(Keys.UP)){
+				player.jump();	
+			}
+			
+			if(Gdx.input.isKeyJustPressed(Keys.X) || Gdx.input.isKeyJustPressed(Keys.SPACE)){
+				shoot();
+			}			
 		}
-		
-		if(Gdx.input.isKeyJustPressed(Keys.Z) || Gdx.input.isKeyJustPressed(Keys.UP)){
-			player.jump();	
-		}
-		
-		if(Gdx.input.isKeyJustPressed(Keys.X) || Gdx.input.isKeyJustPressed(Keys.SPACE)){
-			shoot();
-		}		
-		
-
-		
 	}
 	
 	private void shoot(){	
@@ -397,8 +395,6 @@ public class GameLogic {
 	public void loadLevel(int level){			
 		deadlyThings.clear();
 		goal = new Rectangle();
-		
-		food.clear();
 		
 		for(Food foodS : food) 
 			foodS.remove();
@@ -433,11 +429,9 @@ public class GameLogic {
 	
 	private void loadDeadly(MapLayer deadlyLayer){
 		if(deadlyLayer != null){
-			MapObjects mapObjects = deadlyLayer.getObjects();
-				
+			MapObjects mapObjects = deadlyLayer.getObjects();				
 			for(RectangleMapObject object : 
-				mapObjects.getByType(RectangleMapObject.class)){
-				
+				mapObjects.getByType(RectangleMapObject.class)){				
 				Rectangle rec = object.getRectangle();
 				deadlyThings.add(new Rectangle(rec));			
 			}
