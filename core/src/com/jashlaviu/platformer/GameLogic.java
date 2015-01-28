@@ -230,11 +230,10 @@ public class GameLogic {
 	private void playerLogic(float delta) {
 		boolean needRestart = false;
 		
-		Rectangle pBounds = player.getCollisionBounds();
-		
-		//Updates every actor X position
-		
-		if(player.getState() != State.CROUCHING && !player.isDying()){
+		Rectangle pBounds = player.getCollisionBounds();		
+		//Updates every actor X position		
+
+		if(!player.isDying()){
 			player.updateX(delta);			
 			handleXmapCollision(player, pBounds);	
 		
@@ -320,8 +319,10 @@ public class GameLogic {
 				if(player.getVelocity().y < 0){
 					player.setY(mapBounds.y + mapBounds.height - player.getBoundsDistanceY() );
 					player.getVelocity().y = 0;
-					air = false;
-					player.setState(State.WALKING);
+					air = false;									
+					if(!player.isCrouching())
+						player.setState(State.WALKING);	
+					
 					break;
 				}				
 			}				
@@ -357,17 +358,17 @@ public class GameLogic {
 			}
 			
 			if(Gdx.input.isKeyPressed(Keys.LEFT)){
-				if(player.getState() != State.CROUCHING && !player.isDying()){
+			//	if(player.getState() != State.CROUCHING && !player.isDying()){
 					player.moveLeft();
-				}	
+			//	}	
 			}else{
 				player.setMovingLeft(false);
 			}
 			
 			if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-				if(player.getState() != State.CROUCHING){
+				//if(player.getState() != State.CROUCHING){
 					player.moveRight();
-				}					
+				//}					
 			}else{
 				player.setMovingRight(false);
 			}
@@ -454,55 +455,55 @@ public class GameLogic {
 	
 	private void loadFood(MapLayer foodLayer){
 		if(foodLayer != null){
-		MapObjects mapObjects = foodLayer.getObjects();
-		
-		for(RectangleMapObject object : 
-			mapObjects.getByType(RectangleMapObject.class)){
+			MapObjects mapObjects = foodLayer.getObjects();
 			
-			if(object.getName().equals(FoodChicken.name)){
-				FoodChicken foodChicken = new FoodChicken(object.getRectangle().x, object.getRectangle().y);
-				stage.addActor(foodChicken);
-				food.add(foodChicken);	
+			for(RectangleMapObject object : 
+				mapObjects.getByType(RectangleMapObject.class)){
+				
+				if(object.getName().equals(FoodChicken.name)){
+					FoodChicken foodChicken = new FoodChicken(object.getRectangle().x, object.getRectangle().y);
+					stage.addActor(foodChicken);
+					food.add(foodChicken);	
+				}
 			}
-		}
 		}
 	}
 	
 	private void loadEnemies(MapLayer enemyLayer){
 		if(enemyLayer != null){
-		MapObjects mapObjects = enemyLayer.getObjects();
-		
-		for(RectangleMapObject object : 
-			mapObjects.getByType(RectangleMapObject.class)){
+			MapObjects mapObjects = enemyLayer.getObjects();
 			
-			if(object.getName().equals(EnemySnail.name)){
-				EnemySnail enemySnail = new EnemySnail(object.getRectangle().x, object.getRectangle().y);
-				stage.addActor(enemySnail);
-				enemies.add(enemySnail);			
-			}else if(object.getName().equals(EnemyCrab.name)){				
-				EnemyCrab enemyCrab = new EnemyCrab(object.getRectangle().x, object.getRectangle().y);
-				stage.addActor(enemyCrab);
-				enemies.add(enemyCrab);	
-			}else if(object.getName().equals(EnemySnake.name)){				
-				EnemySnake enemySnake = new EnemySnake(object.getRectangle().x, object.getRectangle().y);
-				stage.addActor(enemySnake);
-				enemies.add(enemySnake);	
-			}			
-			
-		}
+			for(RectangleMapObject object : 
+				mapObjects.getByType(RectangleMapObject.class)){
+				
+				if(object.getName().equals(EnemySnail.name)){
+					EnemySnail enemySnail = new EnemySnail(object.getRectangle().x, object.getRectangle().y);
+					stage.addActor(enemySnail);
+					enemies.add(enemySnail);			
+				}else if(object.getName().equals(EnemyCrab.name)){				
+					EnemyCrab enemyCrab = new EnemyCrab(object.getRectangle().x, object.getRectangle().y);
+					stage.addActor(enemyCrab);
+					enemies.add(enemyCrab);	
+				}else if(object.getName().equals(EnemySnake.name)){				
+					EnemySnake enemySnake = new EnemySnake(object.getRectangle().x, object.getRectangle().y);
+					stage.addActor(enemySnake);
+					enemies.add(enemySnake);	
+				}			
+				
+			}
 		}
 	}
 	
 	private void loadMapBounds(MapLayer collisionLayer){
 		if(collisionLayer != null){
-		MapObjects mapObjects = collisionLayer.getObjects();
-		
-		for(RectangleMapObject object : 
-			mapObjects.getByType(RectangleMapObject.class)){
+			MapObjects mapObjects = collisionLayer.getObjects();
 			
-			Rectangle rec = object.getRectangle();
-			mapCollisionBounds.add(new Rectangle(rec));			
-		}
+			for(RectangleMapObject object : 
+				mapObjects.getByType(RectangleMapObject.class)){
+				
+				Rectangle rec = object.getRectangle();
+				mapCollisionBounds.add(new Rectangle(rec));			
+			}
 		}
 	}
 	

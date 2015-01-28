@@ -72,8 +72,15 @@ public class Player extends ActorJash {
 	}
 	
 	public void updateX(float delta){		
-		if(movingLeft) velocity.x -= MOVESPEED * delta;	
-		if(movingRight)velocity.x += MOVESPEED * delta;		
+		if(movingLeft){
+			if(isCrouching()) velocity.x -= MOVESPEED * 0.5 * delta;
+			else velocity.x -= MOVESPEED * delta;			
+		}
+		
+		if(movingRight){
+			if (isCrouching()) velocity.x += MOVESPEED * 0.5 * delta;
+			else velocity.x += MOVESPEED * delta;			
+		}
 		
 		velocity.x *= Math.exp((double)FRICTION * -delta);  //Aplly friction. This fixes  direfent friction in different fps
 		
@@ -103,9 +110,8 @@ public class Player extends ActorJash {
 		if(state == State.WALKING){
 			state = State.CROUCHING;			
 		//	boundsCrouch = new Rectangle(getX()+2, getY(), getWidth()-4, 8);
-			boundsCrouch = new Rectangle(getX()+4, getY(), getWidth()-10, 12);
-			setCollisionBounds(boundsCrouch);
-			
+			boundsCrouch = new Rectangle(getX()+4, getY()+1, getWidth()-10, 12);
+			setCollisionBounds(boundsCrouch);			
 			animationTime = 0;
 		}
 	}
@@ -172,7 +178,6 @@ public class Player extends ActorJash {
 				setNeedShoot(true);
 				setShooting(false);
 			}
-
 		}
 		
 		if(isDying()){
@@ -335,6 +340,14 @@ public class Player extends ActorJash {
 	
 	public void setShootsLeft(int shoots){
 		shootsLeft = shoots;
+	}
+	
+	public boolean isCrouching(){
+		return (state == State.CROUCHING);
+	}
+	
+	public boolean isWalking(){
+		return (state == State.WALKING);
 	}
 	
 	public int getShootsLeft(){
