@@ -20,7 +20,7 @@ public class Player extends ActorJash {
 	}
 	
 	private State state;	
-	private Animation walkAnimation, jumpAnimation, fallAnimation, crouchAnimation, dieAnimation;
+	private Animation walkAnimation, jumpAnimation, fallAnimation, crouchAnimation, crouchWalkAnimation, dieAnimation;
 	private Animation shootNormalAnimation, shootWalkAnimation, shootJumpAnimation, shootFallAnimation;
 	
 	private float FRICTION, MOVESPEED, MAX_VEL_X, MAX_VEL_Y;
@@ -47,7 +47,7 @@ public class Player extends ActorJash {
 		MOVESPEED = 1500f;
 		state = State.JUMPING;	
 		
-		shootsLeft = 55555;
+		shootsLeft = 5;
 		shootTimer = 0;
 		shootDelay = 0.2f;
 		shootDelayAnimation = 0.2f;
@@ -84,7 +84,7 @@ public class Player extends ActorJash {
 		
 		velocity.x *= Math.exp((double)FRICTION * -delta);  //Aplly friction. This fixes  direfent friction in different fps
 		
-		if(Math.abs(velocity.x) < 2f) velocity.x = 0;	
+		if(Math.abs(velocity.x) < 5f) velocity.x = 0;	
 		
 		if(velocity.x > MAX_VEL_X) velocity.x = MAX_VEL_X;
 		else if(velocity.x < -MAX_VEL_X)  velocity.x = -MAX_VEL_X;
@@ -149,8 +149,19 @@ public class Player extends ActorJash {
 				}else{  //NOT shooting and is falling
 					setRegion(fallAnimation.getKeyFrame(0, false));			
 				}
-			}else if(state == State.CROUCHING){
-				setRegion(crouchAnimation.getKeyFrame(animationTime, false));
+			}else if(state == State.CROUCHING){				
+				if(!crouchAnimation.isAnimationFinished(animationTime)){
+					setRegion(crouchAnimation.getKeyFrame(animationTime, false));
+				}else{
+					if(velocity.x == 0){
+						setRegion(crouchAnimation.getKeyFrame(animationTime, false));
+					}
+					else{  //Is moving
+						setRegion(crouchWalkAnimation.getKeyFrame(animationTime, true));
+					}	
+				}
+				
+				
 			}
 		}		
 
@@ -258,6 +269,7 @@ public class Player extends ActorJash {
 		setFallAnimation(.1f, TextureLoader.playerFall);
 		
 		crouchAnimation = new Animation(0.10f, TextureLoader.playerCrouch);
+		crouchWalkAnimation = new Animation(0.10f, TextureLoader.playerCrouchWalk);
 		dieAnimation = new Animation(0.07f, TextureLoader.playerDie);
 		
 		setShootNormalAnimation(shootDelayAnimation/(float)TextureLoader.playerShootNormal.size, TextureLoader.playerShootNormal);		

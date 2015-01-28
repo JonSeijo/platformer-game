@@ -14,7 +14,7 @@ public class TextureLoader {
 	public static TextureRegion shootCocoNormal, shootVenomNormal;
 	public static TextureRegion guiHungerCapsule, guiHungerBarGreen, guiHungerBarYellow, guiHungerBarRed, guiHungerText, guiSkull;
 	
-	public static Array<TextureRegion> playerWalk, playerJump, playerFall, playerCrouch, playerDie;
+	public static Array<TextureRegion> playerWalk, playerJump, playerFall, playerCrouch, playerCrouchWalk, playerDie;
 	public static Array<TextureRegion> playerShootNormal, playerShootFall, playerShootJump, playerShootWalk;
 	public static Array<TextureRegion> shootCocoDestroy, shootVenomDestroy, crabWalk, crabDie, snailDie, snakeDie, snakeAttack;
 	public static Array<TextureRegion> foodChicken;
@@ -39,14 +39,9 @@ public class TextureLoader {
 		playerJump = getRegions(playerTexture, 2, 1, 32, 32, 3); 
 		
 		playerCrouch = getRegions(playerTexture, 0, 9, 32, 32, 2);
-		playerDie = getRegions(playerTexture,  0, 3, 32, 32, 2);
-		
-		Array<TextureRegion> sNormal = new Array<TextureRegion>();
-		sNormal.add(getRegion(playerTexture, 0, 4, 32, 32));
-		sNormal.add(getRegion(playerTexture, 2, 4, 32, 32));
-		sNormal.add(getRegion(playerTexture, 4, 4, 32, 32));
-		
-	//	playerShootNormal = sNormal;
+		playerCrouchWalk = getRegions(playerTexture, 0, 10, 32, 32, 4);
+		playerDie = getRegions(playerTexture,  0, 3, 32, 32, 2);		
+
 		playerShootNormal = getRegions(playerTexture, 0, 4, 32, 32, 5);
 		playerShootFall = getRegions(playerTexture, 0, 5, 32, 32, 5);
 		playerShootJump = getRegions(playerTexture, 0, 6, 32, 32, 5);

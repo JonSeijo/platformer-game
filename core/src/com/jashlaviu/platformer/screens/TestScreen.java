@@ -35,7 +35,7 @@ public class TestScreen extends ScreenJash{
 		camera.position.y = 130;
 	
 		camera.update();		
-		stage.setDebugAll(true);
+		stage.setDebugAll(false);
 	}
 	
 	@Override
@@ -56,7 +56,7 @@ public class TestScreen extends ScreenJash{
 		batch.setProjectionMatrix(camera.combined);
 		mapRenderer.render();			
 		stage.draw();
-		drawDebug();		
+		//drawDebug();		
 		gui.draw();
 		
 
