@@ -56,8 +56,8 @@ public class Player extends ActorJash {
 		setNormalRegion(TextureLoader.playerNormal);
 		
 		bounds = new Rectangle(getX()+12, getY()+1, 8, 27);
-		boundsNormal = new Rectangle(getX()+12, getY()+1, 8, 27);
-		boundsCrouch = new Rectangle(getX(), getY(), getWidth(), 10);
+		boundsNormal = new Rectangle(getX()+13, getY()+1, 6, 27);
+		boundsCrouch = new Rectangle(getX()-10, getY(), getWidth()-10, 14);
 		
 		setCollisionBounds(boundsNormal);	
 	}
@@ -102,8 +102,10 @@ public class Player extends ActorJash {
 	public void crouch(){
 		if(state == State.WALKING){
 			state = State.CROUCHING;			
-			boundsCrouch = new Rectangle(getX()+2, getY(), getWidth()-4, 8);
+		//	boundsCrouch = new Rectangle(getX()+2, getY(), getWidth()-4, 8);
+			boundsCrouch = new Rectangle(getX()+4, getY(), getWidth()-10, 12);
 			setCollisionBounds(boundsCrouch);
+			
 			animationTime = 0;
 		}
 	}
@@ -112,7 +114,7 @@ public class Player extends ActorJash {
 		if(state == State.CROUCHING){
 			state = State.WALKING;
 			//boundsNormal = new Rectangle(getX(), getY(), getWidth(), 15);
-			boundsNormal = new Rectangle(getX()+12, getY()+1, 8, 27);
+			boundsNormal = new Rectangle(getX()+13, getY()+1, 6, 27);
 			setCollisionBounds(boundsNormal);
 			animationTime = 0;
 		}
@@ -177,8 +179,8 @@ public class Player extends ActorJash {
 			dyingTimer += delta;	
 			setRegion(dieAnimation.getKeyFrame(dyingTimer, false));
 		}
-	}
-	
+	}	
+
 	public void eat(float hungerSatisfaction){
 		//Sonido de comer maybe?
 		hunger -= hungerSatisfaction;
@@ -245,11 +247,12 @@ public class Player extends ActorJash {
 		shootJumpAnimation = new Animation(100f, getRegion());
 		shootFallAnimation = new Animation(100f, getRegion());		
 		
-		setWalkAnimation(0.08f, TextureLoader.playerWalk);		
+		// before:       0.08f
+		setWalkAnimation(0.07f, TextureLoader.playerWalk);		
 		setJumpAnimation(.10f, TextureLoader.playerJump);
 		setFallAnimation(.1f, TextureLoader.playerFall);
 		
-		crouchAnimation = new Animation(0.07f, TextureLoader.playerCrouch);
+		crouchAnimation = new Animation(0.10f, TextureLoader.playerCrouch);
 		dieAnimation = new Animation(0.07f, TextureLoader.playerDie);
 		
 		setShootNormalAnimation(shootDelayAnimation/(float)TextureLoader.playerShootNormal.size, TextureLoader.playerShootNormal);		
@@ -317,7 +320,7 @@ public class Player extends ActorJash {
 			this.addAction(new ParallelAction(Actions.moveTo(getX(), getY() + 40, 2), Actions.fadeOut(2)));
 		}
 	}
-	
+		
 	public void setCheckpoint(Checkpoint checkpoint){
 		this.checkpoint = checkpoint;
 	}

@@ -38,7 +38,7 @@ public class TextureLoader {
 		playerFall = getRegions(playerTexture, 1, 1, 32, 32, 1); 
 		playerJump = getRegions(playerTexture, 2, 1, 32, 32, 3); 
 		
-		playerCrouch = getRegions(playerTexture, 0, 2, 32, 32, 3);
+		playerCrouch = getRegions(playerTexture, 0, 9, 32, 32, 2);
 		playerDie = getRegions(playerTexture,  0, 3, 32, 32, 2);
 		
 		Array<TextureRegion> sNormal = new Array<TextureRegion>();
@@ -50,7 +50,8 @@ public class TextureLoader {
 		playerShootNormal = getRegions(playerTexture, 0, 4, 32, 32, 5);
 		playerShootFall = getRegions(playerTexture, 0, 5, 32, 32, 5);
 		playerShootJump = getRegions(playerTexture, 0, 6, 32, 32, 5);
-		playerShootWalk = getRegions(playerTexture, 0, 7, 32, 32, 5);
+		//playerShootWalk = getRegions(playerTexture, 0, 7, 32, 32, 5);
+		playerShootWalk = getRegions(playerTexture, 0, 8, 32, 32, 3);
 		
 		shootCocoNormal = getRegion(shootTexture, 0, 0, 8, 8);
 		shootCocoDestroy = getRegions(shootTexture, 0, 1, 8, 8, 6);	
