@@ -47,10 +47,10 @@ public class Player extends ActorJash {
 		MOVESPEED = 1500f;
 		state = State.JUMPING;	
 		
-		shootsLeft = 5;
+		shootsLeft = 55555;
 		shootTimer = 0;
-		shootDelay = 0.4f;
-		shootDelayAnimation = 0.4f;
+		shootDelay = 0.2f;
+		shootDelayAnimation = 0.2f;
 		
 		initializeAnimations();		
 		setNormalRegion(TextureLoader.playerNormal);
